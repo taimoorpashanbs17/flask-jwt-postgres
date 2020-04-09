@@ -66,7 +66,7 @@ class GetAllArtists(Resource):
 
 class Artist(Resource):
     @classmethod
-    @jwt_required
+    # @jwt_required
     def get(cls, artist_id: int):
         artist = ArtistModel.find_by_id(artist_id)
         if not artist:

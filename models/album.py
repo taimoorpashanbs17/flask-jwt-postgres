@@ -1,6 +1,9 @@
 from db import db
 import datetime
 from models.artist import ArtistModel
+from sqlalchemy import and_
+from sqlalchemy.sql import func
+
 
 
 class AlbumModel(db.Model):
@@ -10,11 +13,12 @@ class AlbumModel(db.Model):
     title = db.Column(db.String())
     artist_id = db.Column(db.Integer, db.ForeignKey('artists.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
-
+    
     def __init__(self, title, artist_id, created_at):
         self.title = title
         self.artist_id = artist_id
         self.created_at = created_at
+
 
     def save_to_db(self):
         db.session.add(self)
@@ -23,8 +27,8 @@ class AlbumModel(db.Model):
     def commit_db(self):
         db.session.commit()
 
-    def delete_from_db(self, id):
-        db.session.delete(id)
+    def delete_from_db(self, _id):
+        db.session.delete(_id)
         db.session.commit()
 
     @classmethod
@@ -35,14 +39,46 @@ class AlbumModel(db.Model):
     def find_by_title(cls, _title):
         return cls.query.filter_by(title=_title).first()
 
-    def json(self, artist_id):
+    @classmethod
+    def find_by_artistid(cls, _artistid):
+        return cls.query.filter_by(artist_id = _artistid).first()
+
+    @classmethod
+    def find_by_id_and_title(cls, _id, title):
+        return cls.query.filter(and_(AlbumModel.artist_id == _id,
+                                     AlbumModel.title == title)).first()
+
+    @classmethod
+    def getCounts(cls, artist_id):
+            return cls.query(func.count(artist_id)).outerjoin(ArtistModel).\
+                filter_by(AlbumModel.id == artist_id)
+
+    def json(self, album_id):
         return {
-            'data': {
-                'album_id': self.id,
-                'artist_name': self.title,
-                'created_at': self.created_at.strftime("%Y-%m-%d %H:%M:%S"),
-                'artist_info':{
-                    ArtistModel.json(artist_id)
+            'data':{
+                    'album_id': album_id,
+                    'title': self.title,
+                    'created_at': self.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+                    'artist_info': {
+                        'artist_id': self.artist_id,
+                        'artist_name': ArtistModel.find_by_id(self.artist_id).name
+                    }
+                }
+        }
+
+    @classmethod
+    def return_all(self):
+        def to_json(x):
+            return {
+                'data':{
+                    'album_id': x.id,
+                    'title': x.title,
+                    'created_at': x.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+                    'artist_info': {
+                        'artist_id': x.artist_id,
+                        'artist_name': ArtistModel.find_by_id(x.artist_id).name
+                    }
                 }
             }
-        }
+        return {'Albums': list(map(lambda x: to_json(x), AlbumModel.query.all()))}
+

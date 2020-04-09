@@ -6,7 +6,7 @@ from db import db
 from resources.user import UserRegister, User, UserLogin, TokenRefresh, GetUsers
 from resources.genre import Genre, UpdateGenre, NewGenre, GetAllGenres
 from resources.artist import NewArtist, UpdateArtist, GetAllArtists, Artist
-from resources.album import NewAlbum, EditAlbum
+from resources.album import NewAlbum, EditAlbum, GetAllAlbums, Album
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Test@12345@localhost:5432/flask_restapi'
@@ -95,6 +95,8 @@ api.add_resource(Artist, '/artist/<artist_id>')
 
 api.add_resource(NewAlbum, '/new_album')
 api.add_resource(EditAlbum, '/update_album/<album_id>')
+api.add_resource(GetAllAlbums, '/all_albums')
+api.add_resource(Album, '/album/<int:album_id>')
 
 
 if __name__ == '__main__':

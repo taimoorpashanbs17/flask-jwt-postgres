@@ -2,7 +2,7 @@ from flask_restful import Resource, reqparse
 from models.artist import ArtistModel
 from models.album import AlbumModel
 import datetime
-
+from db import db
 
 parser = reqparse.RequestParser()
 parser.add_argument('title',
@@ -19,8 +19,10 @@ _created_at = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 class NewAlbum(Resource):
     def post(self):
         data = parser.parse_args()
-        if AlbumModel.find_by_title(data['title']):
-            return {'message': 'Album with this Name Already Existed'}, 403
+        _album_artist = AlbumModel.find_by_id_and_title(data['artist_id'],
+                                                        data['title'])
+        if _album_artist:
+            return {'message': 'Album with this artist is already exists'}, 403
         artist = ArtistModel.find_by_id(data['artist_id'])
         if not artist:
             return {'message': 'Artist Not Found'}, 404
@@ -37,7 +39,7 @@ class NewAlbum(Resource):
                        'id': new_id,
                        'title': data['title'],
                        'created_at': _created_at,
-                       'artist_info':{
+                       'artist_info': {
                            'artist_id': artist.id,
                            'artist_name': artist.name
                        }
@@ -47,34 +49,66 @@ class NewAlbum(Resource):
 
 class EditAlbum(Resource):
     def put(self, album_id):
-        _albumid = AlbumModel.find_by_id(album_id)
-        if not _albumid:
-            return {'message': 'No Such Album Exist'}, 404
         data = parser.parse_args()
-        _date = _albumid.id
-        if AlbumModel.find_by_title(data['title']):
-            return {'message': 'Album with this name already exists'}, 403
-        _artistid = ArtistModel.find_by_id(data['artist_id'])
-        if ArtistModel.find_by_id(data['artist_id']) is None:
-            return {'message': 'Artist with this ID does not exists'}, 403
-        updated_album = AlbumModel(
-            title=data['title'],
-            artist_id=data['artist_id'],
-            created_at=None
-        )
+        _album_id = AlbumModel.find_by_id(album_id)
+        _artist_id = ArtistModel.find_by_id(data['artist_id'])
+        _album_name = AlbumModel.find_by_title(data['title'])
+        _album_artist = AlbumModel.find_by_id_and_title(data['artist_id'],
+                                                        data['title'])
+        if not _album_id:
+            return {'message': 'No Such Album Exist'}, 404
+        if _artist_id is None:
+            return {'message': 'Artist with this ID does not exists'}, 404
+        if _album_artist:
+            return {'message': 'Album with this artist is already exists'}, 403
         album = AlbumModel.find_by_id(album_id)
-        album.name = data['title']
-        updated_album.commit_db()
+        album.title = data['title']
+        album.artist_id = data['artist_id']
+        artist = ArtistModel.find_by_id(data['artist_id'])
+        db.session.commit()
         return {
                    'message': 'Genre Has been Updated',
                    'GenreDetails': {
                        'id': album_id,
                        'title': data['title'],
-                       'created_at': _albumid.created_at.strftime("%Y-%m-%d %H:%M:%S")
-                       # 'artist_info': {
-                       #     'artist_id': _artistid.id,
-                       #     'artist_name': _artistid.name
-                       # }
+                       'created_at': album.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+                       'artist_info': {
+                           'artist_id': data['artist_id'],
+                           'artist_name': artist.name
+                       }
                    }
                }, 200
 
+
+class GetAllAlbums(Resource):
+    def get(self):
+        return AlbumModel.return_all()
+
+
+class Album(Resource):
+    @classmethod
+    def get(self, album_id: int):
+        _album_id = AlbumModel.find_by_id(album_id)
+        if not _album_id:
+            return {'message': 'No Such Album Exist'}, 404
+        try:
+            return _album_id.json(album_id)
+        except:
+            return {
+                       'message': 'Something went Wrong'
+                   }, 500
+
+    @classmethod
+    def delete(self, album_id: int):
+        album_id = AlbumModel.find_by_id(album_id)
+        if not album_id:
+            return {'message': 'No Such Album Exist'}, 404
+        try:
+            album_id.delete_from_db(album_id)
+            return {
+            'message': 'Album has been deleted'
+            }
+        except:
+            return {
+                'message': 'Something went Wrong'
+                   }, 500
