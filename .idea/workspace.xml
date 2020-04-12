@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8abb252c-3fdb-42df-8bc7-d861ca5101b5" name="Default Changelist" comment="" />
+    <list default="true" id="8abb252c-3fdb-42df-8bc7-d861ca5101b5" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/album.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/album.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/artist.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/artist.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/album.py" beforeDir="false" afterPath="$PROJECT_DIR$/resources/album.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/artist.py" beforeDir="false" afterPath="$PROJECT_DIR$/resources/artist.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/genre.py" beforeDir="false" afterPath="$PROJECT_DIR$/resources/genre.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,6 +24,9 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1a5volgnsKCFRefyWvaDQKbh8A9" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -22,7 +35,8 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../flask_Project - pract" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
@@ -117,33 +131,37 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="463" y="119" key="FileChooserDialogImpl" timestamp="1586098976695">
+    <state x="444" y="167" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1586722574029">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="463" y="119" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1586098976695" />
-    <state width="1345" height="203" key="GridCell.Tab.0.bottom" timestamp="1586467622955">
+    <state x="444" y="167" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1366.728@0.0.1366.728" timestamp="1586722574029" />
+    <state x="463" y="119" key="FileChooserDialogImpl" timestamp="1586724420270">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="203" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1586467622955" />
-    <state width="1345" height="203" key="GridCell.Tab.0.center" timestamp="1586467622955">
+    <state x="463" y="119" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1586724420270" />
+    <state width="1345" height="106" key="GridCell.Tab.0.bottom" timestamp="1586719563994">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="203" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1586467622955" />
-    <state width="1345" height="203" key="GridCell.Tab.0.left" timestamp="1586467622955">
+    <state width="1345" height="106" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1586719563994" />
+    <state width="1345" height="106" key="GridCell.Tab.0.center" timestamp="1586719563994">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="203" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1586467622955" />
-    <state width="1345" height="203" key="GridCell.Tab.0.right" timestamp="1586467622955">
+    <state width="1345" height="106" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1586719563994" />
+    <state width="1345" height="106" key="GridCell.Tab.0.left" timestamp="1586719563993">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1345" height="203" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1586467622955" />
+    <state width="1345" height="106" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1586719563993" />
+    <state width="1345" height="106" key="GridCell.Tab.0.right" timestamp="1586719563994">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1345" height="106" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1586719563994" />
     <state x="184" y="6" key="SettingsEditor" timestamp="1586038830735">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="184" y="6" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1586038830735" />
-    <state x="379" y="188" key="com.intellij.ide.util.TipDialog" timestamp="1586419836933">
+    <state x="379" y="188" key="com.intellij.ide.util.TipDialog" timestamp="1586719113596">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="379" y="188" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1586419836933" />
+    <state x="379" y="188" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1586719113596" />
   </component>
 </project>

@@ -103,12 +103,8 @@ class Album(Resource):
         album_id = AlbumModel.find_by_id(album_id)
         if not album_id:
             return {'message': 'No Such Album Exist'}, 404
-        try:
-            album_id.delete_from_db(album_id)
-            return {
+        album_id.delete_from_db(album_id)
+        return {
             'message': 'Album has been deleted'
             }
-        except:
-            return {
-                'message': 'Something went Wrong'
-                   }, 500
+

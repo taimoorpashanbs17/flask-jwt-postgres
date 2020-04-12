@@ -13,7 +13,7 @@ class AlbumModel(db.Model):
     title = db.Column(db.String())
     artist_id = db.Column(db.Integer, db.ForeignKey('artists.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
-    
+
     def __init__(self, title, artist_id, created_at):
         self.title = title
         self.artist_id = artist_id

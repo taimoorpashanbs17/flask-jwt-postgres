@@ -21,6 +21,8 @@ class NewArtist(Resource):
             name=data['name'],
             created_at=_created_at
         )
+        if not data['name']:
+            return{'message': 'Please Enter Artist Name'}, 403
         new_artist.save_to_db()
         new_id = new_artist.id
         return {
@@ -46,6 +48,8 @@ class UpdateArtist(Resource):
                 name=data['name'],
                 created_at=_date.strftime("%Y-%m-%d %H:%M:%S")
             )
+        if not data['name']:
+            return{'message': 'Please Enter Artist Name'}, 403
         artist = ArtistModel.find_by_id(artist_id)
         artist.name = data['name']
         updated_artist.commit_db()
@@ -66,7 +70,7 @@ class GetAllArtists(Resource):
 
 class Artist(Resource):
     @classmethod
-    # @jwt_required
+    @jwt_required
     def get(cls, artist_id: int):
         artist = ArtistModel.find_by_id(artist_id)
         if not artist:

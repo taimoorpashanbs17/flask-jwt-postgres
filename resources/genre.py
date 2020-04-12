@@ -12,7 +12,6 @@ _created_at = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
 
 class NewGenre(Resource):
-    @jwt_required
     def post(self):
         data = parser.parse_args()
         if GenreModel.find_by_name(data['name']):
@@ -21,6 +20,8 @@ class NewGenre(Resource):
             name=data['name'],
             created_at= _created_at
         )
+        if not data['name']:
+            return{'message': 'Please Enter Genre Name'}, 403
         new_genre.save_to_db()
         new_id = new_genre.id
         return{
@@ -76,6 +77,8 @@ class UpdateGenre(Resource):
                 name=data['name'],
                 created_at=None
             )
+        if not data['name']:
+            return{'message': 'Please Enter Genre Name'}, 403
         genre = GenreModel.find_by_id(genre_id)
         genre.name = data['name']
         updated_genre.commit_db()

@@ -1,3 +1,4 @@
+import os
 from flask import Flask, jsonify
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
@@ -7,9 +8,11 @@ from resources.user import UserRegister, User, UserLogin, TokenRefresh, GetUsers
 from resources.genre import Genre, UpdateGenre, NewGenre, GetAllGenres
 from resources.artist import NewArtist, UpdateArtist, GetAllArtists, Artist
 from resources.album import NewAlbum, EditAlbum, GetAllAlbums, Album
+from resources.playlist import GetAllPlaylists
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Test@12345@localhost:5432/flask_restapi'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL',
+                                                       'postgresql://postgres:Test@12345@localhost:5432/flask_restapi')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['PROPAGATE_EXCEPTIONS'] = True
 app.secret_key = 'jose'  # could do app.config['JWT_SECRET_KEY'] if we prefer
@@ -97,6 +100,8 @@ api.add_resource(NewAlbum, '/new_album')
 api.add_resource(EditAlbum, '/update_album/<album_id>')
 api.add_resource(GetAllAlbums, '/all_albums')
 api.add_resource(Album, '/album/<int:album_id>')
+
+api.add_resource(GetAllPlaylists, '/all_playlists')
 
 
 if __name__ == '__main__':

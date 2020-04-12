@@ -1,7 +1,5 @@
 from db import db
 import datetime
-from sqlalchemy import func, outerjoin
-
 
 
 class ArtistModel(db.Model):
@@ -32,7 +30,6 @@ class ArtistModel(db.Model):
                 'artist_id': self.id,
                 'artist_name': self.name,
                 'created_at': self.created_at.strftime("%Y-%m-%d %H:%M:%S")
-                # 'number_of_albums': AlbumModel.getCounts(self.id)
             }
         }
 
