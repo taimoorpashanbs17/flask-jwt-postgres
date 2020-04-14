@@ -1,6 +1,8 @@
+passlib
 Flask
 Flask-RESTful
 Flask-JWT
 Flask-SQLAlchemy
 uwsgi
 psycopg2
+flask_jwt_extended
