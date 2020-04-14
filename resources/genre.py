@@ -42,7 +42,6 @@ class GetAllGenres(Resource):
 
 class Genre(Resource):
     @classmethod
-    @jwt_required
     def get(cls, genre_id: int):
         genre = GenreModel.find_by_id(genre_id)
         if not genre:
