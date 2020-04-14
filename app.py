@@ -12,7 +12,9 @@ from resources.playlist import GetAllPlaylists
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///data.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL',
+                                                       'jdbc:postgresql://ec2-54-197-48-79.'
+                                                       'compute-1.amazonaws.com:5432/d3f3hie47pgpb0')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['PROPAGATE_EXCEPTIONS'] = True
 app.secret_key = 'jose'  # could do app.config['JWT_SECRET_KEY'] if we prefer
