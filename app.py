@@ -20,7 +20,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'jose'
 api = Api(app)
 
-jwt = JWT(app)  # /auth
+jwt = JWT(app, authenticate, identity)  # /auth
 # @jwt.user_claims_loader
 # def add_claims_to_jwt(identity):  # Remember identity is what we define when creating the access token
 #     if identity == 1:   # instead of hard-coding, we should read from a config file or database to get a list of admins instead
