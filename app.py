@@ -8,6 +8,8 @@ from security import authenticate, identity
 from resources.user import UserRegister
 from resources.item import Item, ItemList
 from resources.store import Store, StoreList
+from resources.genre import Genre, UpdateGenre, NewGenre, GetAllGenres
+
 
 app = Flask(__name__)
 
@@ -24,6 +26,11 @@ api.add_resource(Store, '/store/<string:name>')
 api.add_resource(Item, '/item/<string:name>')
 api.add_resource(ItemList, '/items')
 api.add_resource(StoreList, '/stores')
+
+api.add_resource(NewGenre, '/new_genre')
+api.add_resource(Genre, '/genre/<int:genre_id>')
+api.add_resource(UpdateGenre, '/update_genre/<genre_id>')
+api.add_resource(GetAllGenres, '/all_genre')
 
 api.add_resource(UserRegister, '/register')
 
