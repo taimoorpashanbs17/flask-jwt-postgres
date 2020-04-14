@@ -12,6 +12,7 @@ _created_at = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
 
 class NewGenre(Resource):
+    @jwt_required
     def post(self):
         data = parser.parse_args()
         if GenreModel.find_by_name(data['name']):
