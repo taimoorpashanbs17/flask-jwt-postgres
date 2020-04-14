@@ -31,7 +31,7 @@ jwt = JWT(app, authenticate, identity)  # /auth
 # The following callbacks are used for customizing jwt response/error messages.
 # The original ones may not be in a very pretty format (opinionated)
 @jwt.expired_token_loader
-def expired_token_callback():
+def expired_token_callback(error):
     return jsonify({
         'description': 'The token has expired.',
         'error': 'token_expired'
@@ -55,7 +55,7 @@ def missing_token_callback(error):
 
 
 @jwt.needs_fresh_token_loader
-def token_not_fresh_callback():
+def token_not_fresh_callback(error):
     return jsonify({
         'description': 'The token is not fresh.',
         'error': 'fresh_token_required'
@@ -63,7 +63,7 @@ def token_not_fresh_callback():
 
 
 @jwt.revoked_token_loader
-def revoked_token_callback():
+def revoked_token_callback(error):
     return jsonify({
         'description': 'The token has been revoked.',
         'error': 'token_revoked'
