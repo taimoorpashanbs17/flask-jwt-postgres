@@ -2,7 +2,7 @@ import os
 
 from flask import Flask, jsonify
 from flask_restful import Api
-from flask_jwt import JWT
+from flask_jwt_extended import JWTManager
 
 from security import authenticate, identity
 from resources.user import UserRegister, User, UserLogin, TokenRefresh, GetUsers
@@ -21,18 +21,24 @@ app.config['PROPAGATE_EXCEPTIONS'] = True
 app.secret_key = 'jose'
 api = Api(app)
 
-jwt = JWT(app, authenticate, identity)  # /auth
-# @jwt.user_claims_loader
-# def add_claims_to_jwt(identity):  # Remember identity is what we define when creating the access token
-#     if identity == 1:   # instead of hard-coding, we should read from a config file or database to get a list of admins instead
-#         return {'is_admin': True}
-#     return {'is_admin': False}
+jwt = JWTManager(app)
+
+"""
+`claims` are data we choose to attach to each jwt payload
+and for each jwt protected endpoint, we can retrieve these claims via `get_jwt_claims()`
+one possible use case for claims are access level control, which is shown below.
+"""
+@jwt.user_claims_loader
+def add_claims_to_jwt(identity):  # Remember identity is what we define when creating the access token
+    if identity == 1:   # instead of hard-coding, we should read from a config file or database to get a list of admins instead
+        return {'is_admin': True}
+    return {'is_admin': False}
 
 
 # The following callbacks are used for customizing jwt response/error messages.
 # The original ones may not be in a very pretty format (opinionated)
 @jwt.expired_token_loader
-def expired_token_callback(api):
+def expired_token_callback():
     return jsonify({
         'description': 'The token has expired.',
         'error': 'token_expired'
@@ -40,7 +46,7 @@ def expired_token_callback(api):
 
 
 @jwt.invalid_token_loader
-def invalid_token_callback(api):  # we have to keep the argument here, since it's passed in by the caller internally
+def invalid_token_callback(error):  # we have to keep the argument here, since it's passed in by the caller internally
     return jsonify({
         'description': 'Signature verification failed.',
         'error': 'invalid_token'
@@ -48,7 +54,7 @@ def invalid_token_callback(api):  # we have to keep the argument here, since it'
 
 
 @jwt.unauthorized_loader
-def missing_token_callback(api):
+def missing_token_callback(error):
     return jsonify({
         'description': 'Request does not contain an access token.',
         'error': 'authorization_required'
@@ -56,7 +62,7 @@ def missing_token_callback(api):
 
 
 @jwt.needs_fresh_token_loader
-def token_not_fresh_callback(api):
+def token_not_fresh_callback():
     return jsonify({
         'description': 'The token is not fresh.',
         'error': 'fresh_token_required'
@@ -64,7 +70,7 @@ def token_not_fresh_callback(api):
 
 
 @jwt.revoked_token_loader
-def revoked_token_callback(api):
+def revoked_token_callback():
     return jsonify({
         'description': 'The token has been revoked.',
         'error': 'token_revoked'
