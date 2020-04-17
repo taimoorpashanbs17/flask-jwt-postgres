@@ -6,8 +6,8 @@ class UserModel(db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String)
-    password = db.Column(db.String)
+    username = db.Column(db.String(80))
+    password = db.Column(db.String(80))
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
     def __init__(self, username, password,created_at):

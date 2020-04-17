@@ -3,9 +3,9 @@ import datetime
 from sqlalchemy import func 
 
 
-class GenreModel(db.Model):
-    __tablename__ = 'genre'
-    id = db.Column(db.Integer, primary_key=True)
+class MediaTypeModel(db.Model):
+    __tablename__ = 'media_types'
+    mediatypeid = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String())
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
@@ -26,28 +26,28 @@ class GenreModel(db.Model):
 
     @classmethod
     def find_by_id(cls, id):
-        return cls.query.filter_by(id=id).first()
+        return cls.query.filter_by(mediatypeid=id).first()
 
     @classmethod
     def find_by_name(cls, name):
-        return cls.query.filter(func.lower(GenreModel.name) == name.lower()).all()
+        return cls.query.filter(func.lower(MediaTypeModel.name) == name.lower()).all()
 
     @classmethod
     def return_all(cls):
         def to_json(x):
             return {
-                'genre_id': x.id,
-                'genre_name': x.name,
+                'mediatype_id': x.mediatypeid,
+                'name': x.name,
                 'created_at': x.created_at.strftime("%Y-%m-%d %H:%M:%S")
             }
 
-        return {'Genres': list(map(lambda x: to_json(x), GenreModel.query.all()))}
+        return {'Media_Types': list(map(lambda x: to_json(x), MediaTypeModel.query.all()))}
 
     def json(self):
         return {
             'data': {
-                'genre_id': self.id,
-                'genre_name': self.name,
+                'mediatype_id': self.mediatypeid,
+                'name': self.name,
                 'created_at': self.created_at.strftime("%Y-%m-%d %H:%M:%S")
             }
         }

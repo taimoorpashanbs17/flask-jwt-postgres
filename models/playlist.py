@@ -1,15 +1,16 @@
 from db import db
 import datetime
-from sqlalchemy import func 
+from sqlalchemy import func
 
 
-class GenreModel(db.Model):
-    __tablename__ = 'genre'
+class PlaylistModel(db.Model):
+    __tablename__ = 'playlist'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String())
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
-    def __init__(self, name, created_at):
+
+    def __init__(self,name,created_at):
         self.name = name
         self.created_at = created_at
 
@@ -29,25 +30,25 @@ class GenreModel(db.Model):
         return cls.query.filter_by(id=id).first()
 
     @classmethod
-    def find_by_name(cls, name):
-        return cls.query.filter(func.lower(GenreModel.name) == name.lower()).all()
+    def find_by_name(cls, playlist_name):
+        return cls.query.filter(func.lower(PlaylistModel.name) == playlist_name.lower()).all()
 
     @classmethod
     def return_all(cls):
         def to_json(x):
             return {
-                'genre_id': x.id,
-                'genre_name': x.name,
+                'playlist_id': x.id,
+                'playlist_name': x.name,
                 'created_at': x.created_at.strftime("%Y-%m-%d %H:%M:%S")
             }
 
-        return {'Genres': list(map(lambda x: to_json(x), GenreModel.query.all()))}
+        return {'Playlists': list(map(lambda x: to_json(x), PlaylistModel.query.all()))}
 
     def json(self):
         return {
             'data': {
-                'genre_id': self.id,
-                'genre_name': self.name,
+                'playlist_id': self.id,
+                'playlist_name': self.name,
                 'created_at': self.created_at.strftime("%Y-%m-%d %H:%M:%S")
             }
         }

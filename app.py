@@ -1,25 +1,28 @@
 import os
-
 from flask import Flask, jsonify
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
+from db import db
 
-from security import authenticate, identity
+
 from resources.user import UserRegister, User, UserLogin, TokenRefresh, GetUsers
-from resources.item import Item, ItemList
-from resources.store import Store, StoreList
 from resources.genre import Genre, UpdateGenre, NewGenre, GetAllGenres
-
+from resources.artist import NewArtist, UpdateArtist, GetAllArtists, Artist
+from resources.album import NewAlbum, EditAlbum, GetAllAlbums, Album
+from resources.playlist import GetAllPlaylists, NewPlaylist, UpdatePlaylist, Playlist
+from resources.media_types import GetAllMediaTypes, NewMediaType, UpdateMediaType, MediaType
 
 app = Flask(__name__)
 
-app.config['DEBUG'] = True
-
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///data.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Test@12345@localhost:5432/flask_restapi'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['PROPAGATE_EXCEPTIONS'] = True
-app.secret_key = 'jose'
+app.secret_key = 'jose'  # could do app.config['JWT_SECRET_KEY'] if we prefer
 api = Api(app)
+
+@app.before_first_request
+def create_tables():
+    db.create_all()
 
 jwt = JWTManager(app)
 
@@ -76,15 +79,6 @@ def revoked_token_callback():
         'error': 'token_revoked'
     }), 401
 
-api.add_resource(Store, '/store/<string:name>')
-api.add_resource(Item, '/item/<string:name>')
-api.add_resource(ItemList, '/items')
-api.add_resource(StoreList, '/stores')
-
-api.add_resource(NewGenre, '/new_genre')
-api.add_resource(Genre, '/genre/<int:genre_id>')
-api.add_resource(UpdateGenre, '/update_genre/<genre_id>')
-api.add_resource(GetAllGenres, '/all_genre')
 
 api.add_resource(UserRegister, '/register')
 api.add_resource(User, '/user/<int:user_id>')
@@ -92,13 +86,31 @@ api.add_resource(UserLogin, '/login')
 api.add_resource(GetUsers, '/all_users')
 api.add_resource(TokenRefresh, '/refresh')
 
+api.add_resource(NewGenre, '/new_genre')
+api.add_resource(Genre, '/genre/<int:genre_id>')
+api.add_resource(UpdateGenre, '/update_genre/<genre_id>')
+api.add_resource(GetAllGenres, '/all_genre')
+
+api.add_resource(NewArtist, '/new_artist')
+api.add_resource(UpdateArtist, '/update_artist/<artist_id>')
+api.add_resource(GetAllArtists, '/all_artist')
+api.add_resource(Artist, '/artist/<artist_id>')
+
+api.add_resource(NewAlbum, '/new_album')
+api.add_resource(EditAlbum, '/update_album/<album_id>')
+api.add_resource(GetAllAlbums, '/all_albums')
+api.add_resource(Album, '/album/<int:album_id>')
+
+api.add_resource(GetAllPlaylists, '/all_playlists')
+api.add_resource(NewPlaylist, '/new_playlist')
+api.add_resource(UpdatePlaylist, '/update_playlist/<playlist_id>')
+api.add_resource(Playlist, '/playlist/<int:playlist_id>')
+
+api.add_resource(NewMediaType, '/new_mediaplayer')
+api.add_resource(MediaType, '/mediatype/<int:mediatype_id>')
+api.add_resource(UpdateMediaType, '/update_mediatype/<mediatype_id>')
+api.add_resource(GetAllMediaTypes, '/all_mediatypes')
+
 if __name__ == '__main__':
-    from db import db
     db.init_app(app)
-
-    if app.config['DEBUG']:
-        @app.before_first_request
-        def create_tables():
-            db.create_all()
-
-    app.run(port=5000)
+    app.run(port=5000, debug=True)
