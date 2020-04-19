@@ -17,8 +17,7 @@ _created_at = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
 
 class NewAlbum(Resource):
-    @classmethod
-    def post(cls):
+    def post(self):
         data = parser.parse_args()
         _album_artist = AlbumModel.find_by_id_and_title(data['artist_id'],
                                                         data['title'])
@@ -56,8 +55,7 @@ class NewAlbum(Resource):
 
 
 class EditAlbum(Resource):
-    @classmethod
-    def put(cls, album_id):
+    def put(self, album_id):
         data = parser.parse_args()
         _album_id = AlbumModel.find_by_id(album_id)
         _artist_id = ArtistModel.find_by_id(data['artist_id'])
@@ -92,14 +90,12 @@ class EditAlbum(Resource):
 
 
 class GetAllAlbums(Resource):
-    @classmethod
-    def get(cls):
+    def get(self):
         return AlbumModel.return_all()
 
 
 class Album(Resource):
-    @classmethod
-    def get(cls, album_id: int):
+    def get(self, album_id: int):
         _album_id = AlbumModel.find_by_id(album_id)
         if not _album_id:
             return {'message': 'No Such Album Exist'}, 404
@@ -110,8 +106,7 @@ class Album(Resource):
                        'message': 'Something went Wrong'
                    }, 500
 
-    @classmethod
-    def delete(cls, album_id: int):
+    def delete(self, album_id: int):
         album_id = AlbumModel.find_by_id(album_id)
         if not album_id:
             return {'message': 'No Such Album Exist'}, 404

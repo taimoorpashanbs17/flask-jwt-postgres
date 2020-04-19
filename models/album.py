@@ -45,11 +45,6 @@ class AlbumModel(db.Model):
         return cls.query.filter(and_(AlbumModel.artist_id == _id,
                                      func.lower(AlbumModel.title) == title.lower())).first()
 
-    @classmethod
-    def getCounts(cls, artist_id):
-            return cls.query(func.count(artist_id)).outerjoin(ArtistModel).\
-                filter_by(AlbumModel.id == artist_id)
-
     def json(self, album_id):
         return {
             'data':{

@@ -1,14 +1,9 @@
 -- auto-generated definition
-drop table if exists playlist;
-create table playlist
+create table playlists
 (
-  id serial not null
-    constraint playlists_pkey
-    primary key,
-  name       varchar(120),
-    created_at timestamp default now() not null
+  PlaylistId INTEGER not null
+    primary key
+  autoincrement,
+  Name       NVARCHAR(120)
 );
-
-alter table playlist
-  owner to postgres;
 

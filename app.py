@@ -5,12 +5,13 @@ from flask_jwt_extended import JWTManager
 from db import db
 
 
-from resources.user import UserRegister, User, UserLogin, TokenRefresh, GetUsers
+from resources.user import UserRegister, User, UserLogin, TokenRefresh, GetUsers, UserLogout
 from resources.genre import Genre, UpdateGenre, NewGenre, GetAllGenres
 from resources.artist import NewArtist, UpdateArtist, GetAllArtists, Artist
 from resources.album import NewAlbum, EditAlbum, GetAllAlbums, Album
 from resources.playlist import GetAllPlaylists, NewPlaylist, UpdatePlaylist, Playlist
 from resources.media_types import GetAllMediaTypes, NewMediaType, UpdateMediaType, MediaType
+from resources.tracks import NewTrack, Tracks, GetAllTracks, UpdateTrack
 
 app = Flask(__name__)
 
@@ -85,6 +86,7 @@ api.add_resource(User, '/user/<int:user_id>')
 api.add_resource(UserLogin, '/login')
 api.add_resource(GetUsers, '/all_users')
 api.add_resource(TokenRefresh, '/refresh')
+api.add_resource(UserLogout, '/logout')
 
 api.add_resource(NewGenre, '/new_genre')
 api.add_resource(Genre, '/genre/<int:genre_id>')
@@ -110,6 +112,11 @@ api.add_resource(NewMediaType, '/new_mediaplayer')
 api.add_resource(MediaType, '/mediatype/<int:mediatype_id>')
 api.add_resource(UpdateMediaType, '/update_mediatype/<mediatype_id>')
 api.add_resource(GetAllMediaTypes, '/all_mediatypes')
+
+api.add_resource(NewTrack, '/new_track')
+api.add_resource(Tracks, '/track/<int:track_id>')
+api.add_resource(GetAllTracks, '/all_tracks')
+api.add_resource(UpdateTrack, '/update_track/<int:track_id>')
 
 if __name__ == '__main__':
     db.init_app(app)
