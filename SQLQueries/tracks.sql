@@ -18,7 +18,8 @@ create table tracks
   composer      varchar(70),
   milli_seconds bigint           not null,
   bytes         bigint           not null,
-  unitprice     double precision not null
+  unitprice     double precision not null,
+  created_at    timestamp default now()
 );
 
 alter table tracks
@@ -26,4 +27,3 @@ alter table tracks
 
 create unique index tracks_trackid_uindex
   on tracks (trackid);
-

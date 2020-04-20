@@ -1,4 +1,6 @@
 import datetime
+
+from flask_jwt_extended import jwt_required
 from flask_restful import Resource, reqparse
 from models.genre import GenreModel
 
@@ -40,6 +42,7 @@ class NewGenre(Resource):
 
 
 class GetAllGenres(Resource):
+    @jwt_required
     @classmethod
     def get(cls):
         try:
@@ -51,8 +54,8 @@ class GetAllGenres(Resource):
 
 
 class Genre(Resource):
-    @classmethod
-    def get(cls, genre_id: int):
+    @jwt_required
+    def get(self, genre_id: int):
         genre = GenreModel.find_by_id(genre_id)
         if not genre:
             return {'message': 'Genre Not Found'}, 404

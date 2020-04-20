@@ -1,0 +1,906 @@
+{
+	"info": {
+		"_postman_id": "92734911-1958-4fae-8614-4af053fa7ed0",
+		"name": "Flask-jwt-tokens",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\" : \"TestUser1\",\n\t\"password\" : \"Test@12345\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localURL}}/register",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\" : \"TestUser1\",\n\t\"password\" : \"Test@12345\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localURL}}/login",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localURL}}/all_users",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"all_users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODczOTI0NjUsIm5iZiI6MTU4NzM5MjQ2NSwianRpIjoiZTVlNjlkMjktMGE4NC00YmM0LTlhYmItYjY4MGQ2MjQyYmM4IiwiZXhwIjoxNTg5OTg0NDY1LCJpZGVudGl0eSI6IlRlc3RVc2VyMiIsInR5cGUiOiJyZWZyZXNoIn0.UJFSPTFtIK2IUiYaoIJ_cOkjtPCj-5bmhkuJmYSfiKQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{localURL}}/refresh",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Info",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODYwNDMzNTksIm5iZiI6MTU4NjA0MzM1OSwianRpIjoiMTBhZGUzNGQtOTM5My00NWI5LWIzZTYtZGUyZTcwNDgyMDMxIiwiZXhwIjoxNTg2MDQ0MjU5LCJpZGVudGl0eSI6IkFsaSIsImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyIsInVzZXJfY2xhaW1zIjp7ImlzX2FkbWluIjpmYWxzZX19.XhhkcRInUZMt0O4CwZKfQzo_y2C1MUr1fxsqFAUXd8U",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localURL}}/user/5",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"user",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODczOTE2MDIsIm5iZiI6MTU4NzM5MTYwMiwianRpIjoiMzQ5OTFjMTUtNzNhZi00NWFjLTg3NjUtOTllZTgwY2QzYTJiIiwiZXhwIjoxNTg3MzkyNTAyLCJpZGVudGl0eSI6IlRlc3RVc2VyMiIsImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyIsInVzZXJfY2xhaW1zIjp7ImlzX2FkbWluIjpmYWxzZX19.wpTD3I_jesNrGXpfGCCTsiN8hq53WxZPRX78roAGTRc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{localURL}}/logout",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Genre",
+			"item": [
+				{
+					"name": "New Genre",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODU5MDc1NDQsIm5iZiI6MTU4NTkwNzU0NCwianRpIjoiMjEwODA1MTgtM2YwZS00YzUwLWJmYWItNmFkNjU0N2RhN2Q2IiwiZXhwIjoxNTg1OTA4NDQ0LCJpZGVudGl0eSI6IlRhaW1vb3IiLCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MifQ",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Disco\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localURL}}/new_genre",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"new_genre"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Genres",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localURL}}/all_genre",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"all_genre"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Genre",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODczOTIzMzgsIm5iZiI6MTU4NzM5MjMzOCwianRpIjoiYWQzYTlkZTgtZmZiYS00OGYyLWI1MWUtOGM4OTM3NmVmOTZkIiwiZXhwIjoxNTg3MzkzMjM4LCJpZGVudGl0eSI6IlRlc3RVc2VyMiIsImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyIsInVzZXJfY2xhaW1zIjp7ImlzX2FkbWluIjpmYWxzZX19.vkCki_VMYNiqKVRwk-Ap2noUyDQDfYM6CPrJWU_iO2k",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localURL}}//genre/6",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"",
+								"genre",
+								"6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Genre",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\":\"Jazz\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localURL}}/update_genre/4",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"update_genre",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a genre",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODYwNDU4NDAsIm5iZiI6MTU4NjA0NTg0MCwianRpIjoiMzhjZjkxYTAtNTBiNS00NzI4LTlhOGQtMGZmMzFlZGMyMWUxIiwiZXhwIjoxNTg2MDQ2NzQwLCJpZGVudGl0eSI6IkFsaSIsImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyIsInVzZXJfY2xhaW1zIjp7ImlzX2FkbWluIjpmYWxzZX19.dg8SgjgMNI-CuQokLg4D-WctJWVQDcWxEayTf0xWCnU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{localURL}}/genre/24",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"genre",
+								"24"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Artist",
+			"item": [
+				{
+					"name": "Update an Artist",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\":\"Haddaway\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localURL}}/update_artist/1",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"update_artist",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create an Artist",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\" : \"Nsync\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localURL}}/new_artist",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"new_artist"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Artists",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localURL}}/all_artist",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"all_artist"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Artist Info",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODYwOTg2MDMsIm5iZiI6MTU4NjA5ODYwMywianRpIjoiMzI3ZjNkNmItNjhjYy00OWVhLTk2ODQtZDQ3ZDU3NTdjZTZlIiwiZXhwIjoxNTg2MDk5NTAzLCJpZGVudGl0eSI6IlRhaW1vb3IiLCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6eyJpc19hZG1pbiI6ZmFsc2V9fQ.PrCq_YOmMiWxkmoeJX8VPI754hLvTdcwsKro5pw4k8U",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localURL}}/artist/6",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"artist",
+								"6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete an Artist",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{localURL}}/artist/14",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"artist",
+								"14"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Album",
+			"item": [
+				{
+					"name": "Create an Album",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\" : \"Take the Heat off Me\",\n\t\"artist_id\" : 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localURL}}/new_album",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"new_album"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update an Album",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\" : \"Spice World\",\n\t\"artist_id\" : 2\n\t\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localURL}}/update_album/35",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"update_album",
+								"35"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Albums",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localURL}}/all_albums",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"all_albums"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get an Album",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localURL}}/album/19",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"album",
+								"19"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete an Album",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{localURL}}/album/13",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"album",
+								"13"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Playlist",
+			"item": [
+				{
+					"name": "Get all Playlists",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localURL}}/all_playlists",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"all_playlists"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a Playlist",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\":\"Music Videos\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localURL}}/new_playlist",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"new_playlist"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a Playlist",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\":\"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localURL}}/update_playlist/2",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"update_playlist",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Playlist",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{localURL}}/playlist/4",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"playlist",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Playlist Info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localURL}}/playlist/4",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"playlist",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Media Type",
+			"item": [
+				{
+					"name": "Create a Media type",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\" : \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localURL}}/new_mediaplayer",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"new_mediaplayer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Media Types",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localURL}}/all_mediatypes",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"all_mediatypes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Media Type Info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localURL}}/mediatype/4",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"mediatype",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Media Type",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{localURL}}/mediatype/4",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"mediatype",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a Media Type",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\" : \"Purchased AAC audio file\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localURL}}/update_mediatype/5",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"update_mediatype",
+								"5"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Tracks",
+			"item": [
+				{
+					"name": "Add a New Track",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODcyNDQ1MjEsIm5iZiI6MTU4NzI0NDUyMSwianRpIjoiM2Y0YzAxNTEtODIyNi00ZjQ1LWJmYTEtZDcxODM0YWZjODVhIiwiZXhwIjoxNTg3MjQ1NDIxLCJpZGVudGl0eSI6bnVsbCwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIiwidXNlcl9jbGFpbXMiOnsiaXNfYWRtaW4iOmZhbHNlfX0.gBBFvKuH5Nk2CoNCp6Zyw4zB46gPjnB2Ys7FrnjKuL8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\" : \"Its My Life\",\n\t\"album_id\" :15,\n\t\"mediatype_id\" : 1,\n\t\"genre_id\" : 6,\n\t\"composer\" : \"Thomas Lemar\",\n\t\"milliseconds\" : 45463435,\n\t\"bytes\" : 53233454,\n\t\"unit_price\":2.30\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localURL}}/new_track",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"new_track"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Track Info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localURL}}//track/6",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"",
+								"track",
+								"6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Track",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{localURL}}//track/4",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"",
+								"track",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Tracks",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localURL}}/all_tracks",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"all_tracks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Track",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\" : \"Silent Lover\",\n\t\"album_id\" :41,\n\t\"mediatype_id\" : 1,\n\t\"genre_id\" : 25,\n\t\"composer\" : \"Freddie McCure\",\n\t\"milliseconds\" : 86363435,\n\t\"bytes\" : 5323454,\n\t\"unit_price\":2.30\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localURL}}/update_track/13",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"update_track",
+								"13"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
