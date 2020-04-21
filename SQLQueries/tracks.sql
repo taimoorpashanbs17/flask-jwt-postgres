@@ -16,9 +16,6 @@ create table tracks
     constraint tracks_genre_id_fk
     references genre,
   composer      varchar(70),
-  milli_seconds bigint           not null,
-  bytes         bigint           not null,
-  unitprice     double precision not null,
   created_at    timestamp default now()
 );
 

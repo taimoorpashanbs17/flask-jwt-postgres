@@ -3,6 +3,7 @@ from flask import Flask, jsonify
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from db import db
+
 # import flask_login
 # login_manager = flask_login.LoginManager()
 
@@ -30,6 +31,7 @@ api = Api(app)
 def create_tables():
     db.create_all()
 
+
 jwt = JWTManager(app)
 
 """
@@ -37,6 +39,7 @@ jwt = JWTManager(app)
 and for each jwt protected endpoint, we can retrieve these claims via `get_jwt_claims()`
 one possible use case for claims are access level control, which is shown below.
 """
+
 
 @jwt.user_claims_loader
 def add_claims_to_jwt(identity):  # Remember identity is what we define when creating the access token
@@ -82,7 +85,7 @@ def token_not_fresh_callback():
 @jwt.revoked_token_loader
 def revoked_token_callback():
     return {
-        'message': 'Kindly Login Again, as the token has been revoked.'
+        'message': 'Your token has been revoked.'
     }, 401
 
 

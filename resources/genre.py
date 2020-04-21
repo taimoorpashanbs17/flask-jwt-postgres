@@ -1,6 +1,6 @@
 import datetime
 
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, jwt_optional, get_jwt_identity
 from flask_restful import Resource, reqparse
 from models.genre import GenreModel
 
@@ -13,8 +13,8 @@ _created_at = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
 
 class NewGenre(Resource):
-    @classmethod
-    def post(cls):
+    @jwt_required
+    def post(self):
         data = parser.parse_args()
         if GenreModel.find_by_name(data['name']):
             return {'message': 'Genre with this Name Already Existed'}, 403
@@ -42,9 +42,13 @@ class NewGenre(Resource):
 
 
 class GetAllGenres(Resource):
-    @jwt_required
-    @classmethod
-    def get(cls):
+    @jwt_optional
+    def get(self):
+        if GenreModel.is_data_present() is None:
+            return {'message': 'No Data Available.'}
+        current_user = get_jwt_identity()
+        if not current_user:
+            return GenreModel.return_two_records()
         try:
             return GenreModel.return_all()
         except:
@@ -54,7 +58,6 @@ class GetAllGenres(Resource):
 
 
 class Genre(Resource):
-    @jwt_required
     def get(self, genre_id: int):
         genre = GenreModel.find_by_id(genre_id)
         if not genre:
@@ -66,8 +69,8 @@ class Genre(Resource):
                    'message': 'Something Went Wrong'
                }, 500
 
-    @classmethod
-    def delete(cls, genre_id: int):
+    @jwt_required
+    def delete(self, genre_id: int):
         genre_id = GenreModel.find_by_id(genre_id)
         if not genre_id:
             return {'message': 'No Such Genre Exist'}, 404
@@ -83,8 +86,8 @@ class Genre(Resource):
 
 
 class UpdateGenre(Resource):
-    @classmethod
-    def put(cls, genre_id):
+    @jwt_required
+    def put(self, genre_id):
         id = GenreModel.find_by_id(genre_id)
         if not id:
             return {'message': 'No Such Genre Exist'}, 404

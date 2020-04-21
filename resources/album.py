@@ -1,3 +1,4 @@
+from flask_jwt_extended import jwt_required, jwt_optional, get_jwt_identity
 from flask_restful import Resource, reqparse
 from models.artist import ArtistModel
 from models.album import AlbumModel
@@ -17,6 +18,7 @@ _created_at = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
 
 class NewAlbum(Resource):
+    @jwt_required
     def post(self):
         data = parser.parse_args()
         _album_artist = AlbumModel.find_by_id_and_title(data['artist_id'],
@@ -37,24 +39,22 @@ class NewAlbum(Resource):
             new_album.save_to_db()
             new_id = new_album.id
             return {
-                       'message': 'New Album Has been Added',
-                       'AlbumDetails': {
-                           'id': new_id,
-                           'title': data['title'],
-                           'created_at': _created_at,
-                           'artist_info': {
-                               'artist_id': artist.id,
-                               'artist_name': artist.name
-                           }
-                       }
-                   }, 201
+                'message': 'New Album Has been Added',
+                'AlbumDetails': {
+                    'id': new_id,
+                    'title': data['title'],
+                    'created_at': _created_at,
+                    'artist_name': artist.name
+                 }
+            }, 201
         except:
             return {
-                       'message': 'Something Went Wrong'
+                'message': 'Something Went Wrong'
                    }, 500
 
 
 class EditAlbum(Resource):
+    @jwt_required
     def put(self, album_id):
         data = parser.parse_args()
         _album_id = AlbumModel.find_by_id(album_id)
@@ -81,17 +81,23 @@ class EditAlbum(Resource):
                        'id': album_id,
                        'title': data['title'],
                        'created_at': album.created_at.strftime("%Y-%m-%d %H:%M:%S"),
-                       'artist_info': {
-                           'artist_id': data['artist_id'],
-                           'artist_name': artist.name
-                       }
+                       'artist_name': artist.name
                    }
                }, 200
 
 
 class GetAllAlbums(Resource):
+    @jwt_optional
     def get(self):
-        return AlbumModel.return_all()
+        if AlbumModel.is_data_present() is None:
+            return {'message': 'No Data Available.'}
+        current_user = get_jwt_identity()
+        if not current_user:
+            return AlbumModel.return_two_records()
+        try:
+            return AlbumModel.return_all()
+        except:
+            return {'message': 'Something went wrong'}, 500
 
 
 class Album(Resource):
@@ -106,12 +112,15 @@ class Album(Resource):
                        'message': 'Something went Wrong'
                    }, 500
 
+    @jwt_required
     def delete(self, album_id: int):
         album_id = AlbumModel.find_by_id(album_id)
         if not album_id:
             return {'message': 'No Such Album Exist'}, 404
-        album_id.delete_from_db(album_id)
-        return {
-            'message': 'Album has been deleted'
+        try:
+            album_id.delete_from_db(album_id)
+            return {
+                'message': 'Album has been deleted'
             }
-
+        except:
+            return {'message': 'Something went wrong'}, 500

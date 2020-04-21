@@ -52,3 +52,19 @@ class ArtistModel(db.Model):
             }
 
         return {'Artists': list(map(lambda x: to_json(x), ArtistModel.query.all()))}
+
+    @classmethod
+    def return_two_records(cls):
+        def to_json(x):
+            return {
+                'artist_id': x.id,
+                'artist_name': x.name,
+                'created_at': x.created_at.strftime("%Y-%m-%d %H:%M:%S")
+            }
+
+        return {'Artists': list(map(lambda x: to_json(x), ArtistModel.query.limit(2).all())),
+                'message': 'More Data can be display if you enter access_token.'}
+
+    @classmethod
+    def is_data_present(cls):
+        return cls.query.first()

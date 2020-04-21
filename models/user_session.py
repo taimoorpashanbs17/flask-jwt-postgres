@@ -1,6 +1,6 @@
 from db import db
 import datetime
-from sqlalchemy import and_, func
+from sqlalchemy import and_
 
 
 class UserSessionModel(db.Model):

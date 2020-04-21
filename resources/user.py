@@ -1,7 +1,7 @@
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import create_access_token, create_refresh_token, \
     jwt_refresh_token_required, get_jwt_identity, \
-    jwt_required, get_raw_jwt
+    jwt_required, get_raw_jwt, get_jti
 from models.user import UserModel, RevokedTokenModel
 import datetime
 from db import db
@@ -64,17 +64,15 @@ class UserLogin(Resource):
     def post(self):
         data = _user_parser.parse_args()
         current_user = UserModel.find_by_username(data['username'])
-        user_id = UserModel.find_by_username(data['username']).id
+        current_user_id = UserModel.find_by_username(data['username']).id
+        user_session_info = UserSessionModel.find_by_id_and_time_out(current_user_id)
+        if user_session_info:
+            return {'message': 'You are Already Login'}, 400
         user_time_in = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
         if not current_user:
             return {'message': 'User {} doesn\'t exist'.format(data['username'])}, 401
-        user_login = UserSessionModel.find_by_id_and_time_out(user_id)
-        if user_login:
-            return {
-                'message': 'User Already logged in'
-            }, 401
         if UserModel.verify_hash(data['password'], current_user.password):
-            access_token = create_access_token(identity=data['username'])
+            access_token = create_access_token(identity=data['username'], fresh=True)
             refresh_token = create_refresh_token(identity=data['username'])
             user_id = UserModel.find_by_username(data['username']).id
             new_session = UserSessionModel(
@@ -87,7 +85,7 @@ class UserLogin(Resource):
                        'message': 'Logged in as {}'.format(current_user.username),
                         'session_time_in': user_time_in,
                        'access_token': access_token,
-                       'refresh_token': refresh_token
+                        'refresh_token': refresh_token
                    }, 200
 
         else:

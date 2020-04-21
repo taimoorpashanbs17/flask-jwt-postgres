@@ -15,7 +15,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"username\" : \"TestUser1\",\n\t\"password\" : \"Test@12345\"\n}",
+							"raw": "{\n\t\"username\" : \"QA Tester\",\n\t\"password\" : \"Test@12345\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -36,12 +36,26 @@
 				},
 				{
 					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8097d053-1cb1-40e3-8633-2b523b2954b8",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setGlobalVariable(\"access_token\", jsonData.access_token);",
+									"postman.setGlobalVariable(\"refresh_token\", jsonData.refresh_token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"username\" : \"TestUser1\",\n\t\"password\" : \"Test@12345\"\n}",
+							"raw": "{\n\t\"username\" : \"Ali\",\n\t\"password\" : \"Test@12345\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -79,19 +93,40 @@
 				},
 				{
 					"name": "Refresh Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "373fa972-d888-4424-8fd9-7e5da077435d",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setGlobalVariable(\"access_token\", jsonData.access_token);",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODczOTI0NjUsIm5iZiI6MTU4NzM5MjQ2NSwianRpIjoiZTVlNjlkMjktMGE4NC00YmM0LTlhYmItYjY4MGQ2MjQyYmM4IiwiZXhwIjoxNTg5OTg0NDY1LCJpZGVudGl0eSI6IlRlc3RVc2VyMiIsInR5cGUiOiJyZWZyZXNoIn0.UJFSPTFtIK2IUiYaoIJ_cOkjtPCj-5bmhkuJmYSfiKQ",
+									"value": "",
 									"type": "string"
 								}
 							]
 						},
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{refresh_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{localURL}}/refresh",
 							"host": [
@@ -136,22 +171,14 @@
 					"name": "Logout",
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODczOTE2MDIsIm5iZiI6MTU4NzM5MTYwMiwianRpIjoiMzQ5OTFjMTUtNzNhZi00NWFjLTg3NjUtOTllZTgwY2QzYTJiIiwiZXhwIjoxNTg3MzkyNTAyLCJpZGVudGl0eSI6IlRlc3RVc2VyMiIsImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyIsInVzZXJfY2xhaW1zIjp7ImlzX2FkbWluIjpmYWxzZX19.wpTD3I_jesNrGXpfGCCTsiN8hq53WxZPRX78roAGTRc",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
 						"method": "POST",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "",
-								"type": "text",
-								"disabled": true
+								"value": "Bearer {{access_token}}",
+								"type": "text"
 							}
 						],
 						"url": {
@@ -219,7 +246,13 @@
 					"name": "Get all Genres",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{localURL}}/all_genre",
 							"host": [
@@ -326,7 +359,13 @@
 					"name": "Update an Artist",
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n\t\"name\":\"Haddaway\"\n}",
@@ -353,7 +392,13 @@
 					"name": "Create an Artist",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n\t\"name\" : \"Nsync\"\n}\n",
@@ -379,7 +424,13 @@
 					"name": "Get All Artists",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{localURL}}/all_artist",
 							"host": [
@@ -447,11 +498,20 @@
 				{
 					"name": "Create an Album",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"title\" : \"Take the Heat off Me\",\n\t\"artist_id\" : 2\n}",
+							"raw": "{\n\t\"title\" : \"No Strings Attached\",\n\t\"artist_id\" : 16\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -500,8 +560,17 @@
 				{
 					"name": "Get All Albums",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{localURL}}/all_albums",
 							"host": [
@@ -517,16 +586,32 @@
 				{
 					"name": "Get an Album",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{localURL}}/album/19",
+							"raw": "{{localURL}}/album/3",
 							"host": [
 								"{{localURL}}"
 							],
 							"path": [
 								"album",
-								"19"
+								"3"
 							]
 						}
 					},
@@ -536,15 +621,21 @@
 					"name": "Delete an Album",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{localURL}}/album/13",
+							"raw": "{{localURL}}/album/3",
 							"host": [
 								"{{localURL}}"
 							],
 							"path": [
 								"album",
-								"13"
+								"3"
 							]
 						}
 					},
@@ -580,7 +671,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\":\"Music Videos\"\n}",
+							"raw": "{\n\t\"name\":\"Classical\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -672,10 +763,16 @@
 					"name": "Create a Media type",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\" : \"\"\n}",
+							"raw": "{\n\t\"name\" : \"AAC audio file\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -788,16 +885,22 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODcyNDQ1MjEsIm5iZiI6MTU4NzI0NDUyMSwianRpIjoiM2Y0YzAxNTEtODIyNi00ZjQ1LWJmYTEtZDcxODM0YWZjODVhIiwiZXhwIjoxNTg3MjQ1NDIxLCJpZGVudGl0eSI6bnVsbCwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIiwidXNlcl9jbGFpbXMiOnsiaXNfYWRtaW4iOmZhbHNlfX0.gBBFvKuH5Nk2CoNCp6Zyw4zB46gPjnB2Ys7FrnjKuL8",
+									"value": "",
 									"type": "string"
 								}
 							]
 						},
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\" : \"Its My Life\",\n\t\"album_id\" :15,\n\t\"mediatype_id\" : 1,\n\t\"genre_id\" : 6,\n\t\"composer\" : \"Thomas Lemar\",\n\t\"milliseconds\" : 45463435,\n\t\"bytes\" : 53233454,\n\t\"unit_price\":2.30\n}",
+							"raw": "{\n\t\"name\" : \"Words\",\n\t\"album_id\" :4,\n\t\"mediatype_id\" : 3,\n\t\"genre_id\" : 13,\n\t\"composer\" : \"Angus Young, Malcolm Young, Brian Johnson\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -858,7 +961,13 @@
 					"name": "Get all Tracks",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{localURL}}/all_tracks",
 							"host": [

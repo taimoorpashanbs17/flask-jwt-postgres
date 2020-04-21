@@ -1,6 +1,6 @@
 from db import db
 import datetime
-from sqlalchemy import func 
+from sqlalchemy import func
 
 
 class MediaTypeModel(db.Model):
@@ -36,7 +36,7 @@ class MediaTypeModel(db.Model):
     def return_all(cls):
         def to_json(x):
             return {
-                'mediatype_id': x.mediatypeid,
+                'mediaType_id': x.mediatypeid,
                 'name': x.name,
                 'created_at': x.created_at.strftime("%Y-%m-%d %H:%M:%S")
             }
@@ -46,8 +46,24 @@ class MediaTypeModel(db.Model):
     def json(self):
         return {
             'data': {
-                'mediatype_id': self.mediatypeid,
+                'mediaType_id': self.mediatypeid,
                 'name': self.name,
                 'created_at': self.created_at.strftime("%Y-%m-%d %H:%M:%S")
             }
         }
+
+    @classmethod
+    def return_two_records(cls):
+        def to_json(x):
+            return {
+                'mediaType_id': x.mediatypeid,
+                'name': x.name,
+                'created_at': x.created_at.strftime("%Y-%m-%d %H:%M:%S")
+            }
+
+        return {'Media_Types': list(map(lambda x: to_json(x), MediaTypeModel.query.limit(2).all())),
+                'message': 'More Data can be display if you enter access_token.'}
+
+    @classmethod
+    def is_data_present(cls):
+        return cls.query.first()

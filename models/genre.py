@@ -1,6 +1,6 @@
 from db import db
 import datetime
-from sqlalchemy import func 
+from sqlalchemy import func
 
 
 class GenreModel(db.Model):
@@ -51,3 +51,19 @@ class GenreModel(db.Model):
                 'created_at': self.created_at.strftime("%Y-%m-%d %H:%M:%S")
             }
         }
+
+    @classmethod
+    def return_two_records(cls):
+        def to_json(x):
+            return {
+                'genre_id': x.id,
+                'genre_name': x.name,
+                'created_at': x.created_at.strftime("%Y-%m-%d %H:%M:%S")
+            }
+
+        return {'Genres': list(map(lambda x: to_json(x), GenreModel.query.limit(2).all())),
+                'message': 'More Data can be display if you enter access_token.'}
+
+    @classmethod
+    def is_data_present(cls):
+        return cls.query.first()

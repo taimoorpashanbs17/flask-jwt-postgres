@@ -15,21 +15,15 @@ class TracksModel(db.Model):
     mediatypeid = db.Column(db.Integer, db.ForeignKey('media_types.mediatypeid'), nullable=False)
     genreid = db.Column(db.Integer, db.ForeignKey('genre.id'), nullable=False)
     composer = db.Column(db.String())
-    milli_seconds = db.Column(db.BigInteger)
-    bytes = db.Column(db.BigInteger)
-    unitprice = db.Column(db.Float)
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
     def __init__(self, name, albumid, mediatypeid, genreid,
-                 composer, milli_seconds, bytes, unitprice, created_at):
+                 composer, created_at):
         self.name = name
         self.albumid = albumid
         self.mediatypeid = mediatypeid
         self.genreid = genreid
         self.composer = composer,
-        self.milli_seconds = milli_seconds
-        self.bytes = bytes
-        self.unitprice = unitprice
         self.created_at = created_at
 
     def save_to_db(self):
@@ -79,20 +73,17 @@ class TracksModel(db.Model):
     def json(self, track_id):
         return {
             'data': {
-                    'track_id': track_id,
-                    'name': self.name,
-                    'composer': self.composer,
-                    'milli_seconds': self.milli_seconds,
-                    'bytes': self.bytes,
-                    'unit_price': self.unitprice,
-                    'created_at': self.created_at.strftime("%Y-%m-%d %H:%M:%S"),
-                    'track_info': {
-                        'artist_name': TracksModel.get_artistname(self.albumid),
-                        'album': AlbumModel.find_by_id(self.albumid).title,
-                        'genre': GenreModel.find_by_id(self.genreid).name,
-                        'media_type': MediaTypeModel.find_by_id(self.mediatypeid).name
-                    }
+                'track_id': track_id,
+                'name': self.name,
+                'composer': self.composer,
+                'created_at': self.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+                'track_info': {
+                    'artist_name': TracksModel.get_artistname(self.albumid),
+                    'album': AlbumModel.find_by_id(self.albumid).title,
+                    'genre': GenreModel.find_by_id(self.genreid).name,
+                    'media_type': MediaTypeModel.find_by_id(self.mediatypeid).name
                 }
+            }
         }
 
     @classmethod
@@ -102,9 +93,6 @@ class TracksModel(db.Model):
                 'track_id': x.trackid,
                 'name': x.name,
                 'composer': x.composer,
-                'milli_seconds': x.milli_seconds,
-                'bytes': x.bytes,
-                'unit_price': x.unitprice,
                 'created_at': x.created_at.strftime("%Y-%m-%d %H:%M:%S"),
                 'track_info': {
                     'artist_name': TracksModel.get_artistname(x.albumid),
@@ -115,3 +103,26 @@ class TracksModel(db.Model):
             }
 
         return {'Tracks': list(map(lambda x: to_json(x), TracksModel.query.all()))}
+
+    @classmethod
+    def return_two_records(cls):
+        def to_json(x):
+            return {
+                'track_id': x.trackid,
+                'name': x.name,
+                'composer': x.composer,
+                'created_at': x.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+                'track_info': {
+                    'artist_name': TracksModel.get_artistname(x.albumid),
+                    'album': AlbumModel.find_by_id(x.albumid).title,
+                    'genre': GenreModel.find_by_id(x.genreid).name,
+                    'media_type': MediaTypeModel.find_by_id(x.mediatypeid).name
+                }
+            }
+
+        return {'Tracks': list(map(lambda x: to_json(x), TracksModel.query.limit(2).all())),
+                'message': 'More Data can be display if you enter access_token.'}
+
+    @classmethod
+    def is_data_present(cls):
+        return cls.query.first()
