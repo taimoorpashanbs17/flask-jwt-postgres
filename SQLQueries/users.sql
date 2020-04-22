@@ -1,9 +1,20 @@
+drop table if exists users;
+-- auto-generated definition
 create table users
 (
-  id         SERIAL      not null
+  id         serial                  not null
+    constraint users_pkey
     primary key,
-  username   VARCHAR(120) not null
+  email      text                    not null
+    constraint users_email_key
     unique,
-  password   VARCHAR(120) not null,
-  created_at timestamp without time zone NOT NULL DEFAULT now()
+  password   varchar(120)            not null,
+  first_name varchar(120)            not null,
+  last_name  varchar(120)            not null,
+  is_admin   boolean default false   not null,
+  created_at timestamp default not null
 );
+
+alter table users
+  owner to postgres;
+

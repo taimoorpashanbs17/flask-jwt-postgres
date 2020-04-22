@@ -111,7 +111,6 @@ class UpdateMediaType(Resource):
                            'name': data['name']
                        }
                    }, 200
-        except:
-            return {
-                       'message': 'Something Went Wrong'
-                   }, 500
+        except Exception as e:
+            return dict(message= e._message())
+

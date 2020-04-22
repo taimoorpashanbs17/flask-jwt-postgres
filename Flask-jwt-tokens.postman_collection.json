@@ -15,7 +15,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"username\" : \"QA Tester\",\n\t\"password\" : \"Test@12345\"\n}",
+							"raw": "{\n\t\"email\" : \"taimoor.pasha@gmail.com\",\n\t\"password\" : \"Test@12345\",\n\t\"first_name\" : \"New\",\n\t\"last_name\": \"User\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -55,7 +55,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"username\" : \"Ali\",\n\t\"password\" : \"Test@12345\"\n}",
+							"raw": "{\n\t\"email\" : \"taimoor.pasha@northbaysolutions.net\",\n\t\"password\" : \"Test@12345\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -188,6 +188,66 @@
 							],
 							"path": [
 								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Make an Admin",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"is_admin\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localURL}}/make_inactive/1",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"make_inactive",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user Info",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"first_name\":\"Taimoor\",\n\t\"last_name\": \"Pasha\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localURL}}/update_user/1",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"update_user",
+								"1"
 							]
 						}
 					},
@@ -325,17 +385,16 @@
 					"name": "Delete a genre",
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODYwNDU4NDAsIm5iZiI6MTU4NjA0NTg0MCwianRpIjoiMzhjZjkxYTAtNTBiNS00NzI4LTlhOGQtMGZmMzFlZGMyMWUxIiwiZXhwIjoxNTg2MDQ2NzQwLCJpZGVudGl0eSI6IkFsaSIsImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyIsInVzZXJfY2xhaW1zIjp7ImlzX2FkbWluIjpmYWxzZX19.dg8SgjgMNI-CuQokLg4D-WctJWVQDcWxEayTf0xWCnU",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{localURL}}/genre/24",
 							"host": [
@@ -401,7 +460,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\" : \"Nsync\"\n}\n",
+							"raw": "{\n\t\"name\" : \"Maroon 5\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -475,7 +534,13 @@
 					"name": "Delete an Artist",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{localURL}}/artist/14",
 							"host": [
@@ -795,7 +860,13 @@
 					"name": "Get all Media Types",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{localURL}}/all_mediatypes",
 							"host": [
@@ -830,15 +901,21 @@
 					"name": "Delete a Media Type",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{localURL}}/mediatype/4",
+							"raw": "{{localURL}}/mediatype/6",
 							"host": [
 								"{{localURL}}"
 							],
 							"path": [
 								"mediatype",
-								"4"
+								"6"
 							]
 						}
 					},

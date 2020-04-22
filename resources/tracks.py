@@ -119,7 +119,7 @@ class GetAllTracks(Resource):
             return TracksModel.return_two_records()
         try:
             return TracksModel.return_all()
-        except:
+        except Exception as e:
             return {
                 'message': 'Something went wrong'
                 }, 500

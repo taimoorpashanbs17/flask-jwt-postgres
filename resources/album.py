@@ -4,6 +4,7 @@ from models.artist import ArtistModel
 from models.album import AlbumModel
 import datetime
 from db import db
+from sqlalchemy.exc import IntegrityError
 
 parser = reqparse.RequestParser()
 parser.add_argument('title',
@@ -90,7 +91,7 @@ class GetAllAlbums(Resource):
     @jwt_optional
     def get(self):
         if AlbumModel.is_data_present() is None:
-            return {'message': 'No Data Available.'}
+            return {'message': 'No Data Available.'}, 200
         current_user = get_jwt_identity()
         if not current_user:
             return AlbumModel.return_two_records()
@@ -122,5 +123,6 @@ class Album(Resource):
             return {
                 'message': 'Album has been deleted'
             }
-        except:
-            return {'message': 'Something went wrong'}, 500
+        except IntegrityError as e:
+            db.session.rollback()
+            return dict(message=e._message())

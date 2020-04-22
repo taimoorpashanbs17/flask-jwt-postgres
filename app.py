@@ -8,7 +8,7 @@ from db import db
 # login_manager = flask_login.LoginManager()
 
 from resources.user import UserRegister, User, UserLogin, TokenRefresh, \
-    GetUsers, UserLogout, RevokedTokenModel
+    GetUsers, UserLogout, RevokedTokenModel, MakeInActive, UpdateUser
 from resources.genre import Genre, UpdateGenre, NewGenre, GetAllGenres
 from resources.artist import NewArtist, UpdateArtist, GetAllArtists, Artist
 from resources.album import NewAlbum, EditAlbum, GetAllAlbums, Album
@@ -43,7 +43,7 @@ one possible use case for claims are access level control, which is shown below.
 
 @jwt.user_claims_loader
 def add_claims_to_jwt(identity):  # Remember identity is what we define when creating the access token
-    if identity == 1:   # instead of hard-coding, we should read from a config file or database to get a list of admins instead
+    if identity == "taimoorpasha2009@gmail.com":   # instead of hard-coding, we should read from a config file or database to get a list of admins instead
         return {'is_admin': True}
     return {'is_admin': False}
 
@@ -90,11 +90,13 @@ def revoked_token_callback():
 
 
 api.add_resource(UserRegister, '/register')
-api.add_resource(User, '/user/<int:user_id>')
+# api.add_resource(User, '/user/<int:user_id>')
 api.add_resource(UserLogin, '/login')
-api.add_resource(GetUsers, '/all_users')
+# api.add_resource(GetUsers, '/all_users')
+api.add_resource(UpdateUser, '/update_user/<int:user_id>')
 api.add_resource(TokenRefresh, '/refresh')
 api.add_resource(UserLogout, '/logout')
+api.add_resource(MakeInActive, '/make_inactive/<int:user_id>')
 
 api.add_resource(NewGenre, '/new_genre')
 api.add_resource(Genre, '/genre/<int:genre_id>')

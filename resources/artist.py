@@ -1,7 +1,9 @@
-from flask_jwt_extended import jwt_required, jwt_optional, get_jwt_identity
+from flask_jwt_extended import jwt_required, jwt_optional, get_jwt_identity, get_jwt_claims
 from flask_restful import Resource, reqparse
 from models.artist import ArtistModel
 import datetime
+from sqlalchemy.exc import IntegrityError
+from db import db
 
 parser = reqparse.RequestParser()
 parser.add_argument('name',
@@ -104,6 +106,11 @@ class Artist(Resource):
 
     @jwt_required
     def delete(self, artist_id: int):
+        claims = get_jwt_claims()
+        if not claims['is_admin']:
+            return {
+                       'message': 'Admin Privileges required'
+                   }, 401
         artist_id = ArtistModel.find_by_id(artist_id)
         if not artist_id:
             return {'message': 'No Such Artist Exist'}, 404
@@ -112,7 +119,6 @@ class Artist(Resource):
             return {
                 'message': 'Artist has been deleted'
             }
-        except:
-            return {
-                       'message': 'Something went wrong'
-                   }, 500
+        except IntegrityError as e:
+            db.session.rollback()
+            return dict(message=e._message())
