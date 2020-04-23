@@ -70,11 +70,6 @@ class UserRegister(Resource):
 
 
 class User(Resource):
-    """
-    This resource can be useful when testing our Flask app. We may not want to expose it to public users, but for the
-    sake of demonstration in this course, it can be useful when we are manipulating data regarding the users.
-    """
-
     @classmethod
     @jwt_required
     def get(cls, user_id: int):

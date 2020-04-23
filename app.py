@@ -21,13 +21,6 @@ app.config['JWT_BLACKLIST_ENABLED'] = True
 app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
 app.secret_key = 'jose'
 api = Api(app)
-
-
-@app.before_first_request
-def create_tables():
-    db.create_all()
-
-
 jwt = JWTManager(app)
 
 
