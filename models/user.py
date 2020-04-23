@@ -8,10 +8,10 @@ class UserModel(db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String())
-    password = db.Column(db.String())
-    first_name = db.Column(db.String())
-    last_name = db.Column(db.String())
+    email = db.Column(db.String(90))
+    password = db.Column(db.String(80))
+    first_name = db.Column(db.String(40))
+    last_name = db.Column(db.String(40))
     is_active = db.Column(db.Boolean())
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 

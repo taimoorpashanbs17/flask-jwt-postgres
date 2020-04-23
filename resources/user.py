@@ -1,5 +1,3 @@
-import traceback
-
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import create_access_token, create_refresh_token, \
     jwt_refresh_token_required, get_jwt_identity, \
@@ -93,7 +91,7 @@ class UserLogin(Resource):
         email_address = data['email']
         password = data['password']
         current_user = UserModel.find_by_email(email_address)
-        user_full_name = current_user.first_name+" "+current_user.last_name
+        # user_full_name = current_user.first_name+" "+current_user.last_name
         current_user_id = UserModel.find_by_email(email_address).id
         user_session_info = UserSessionModel.find_by_id_and_time_out(current_user_id)
         if user_session_info:
@@ -120,7 +118,7 @@ class UserLogin(Resource):
             )
             new_session.save_to_db()
             return {
-                       'message': '{} is logged in'.format(user_full_name),
+                       'message': 'User have logged in',
                         'session_time_in': user_time_in,
                        'access_token': access_token,
                         'refresh_token': refresh_token
@@ -140,14 +138,6 @@ class GetUsers(Resource):
 class TokenRefresh(Resource):
     @jwt_refresh_token_required
     def post(self):
-        """
-        Get a new access token without requiring username and password—only the 'refresh token'
-        provided in the /login endpoint.
-
-        Note that refreshed access tokens have a `fresh=False`, which means that the user may have not
-        given us their username and password for potentially a long time (if the token has been
-        refreshed many times over).
-        """
         current_user = get_jwt_identity()
         new_token = create_access_token(identity=current_user, fresh=False)
         return {'access_token': new_token}, 200
