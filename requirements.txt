@@ -6,3 +6,4 @@ Flask-SQLAlchemy
 uwsgi
 psycopg2
 flask_jwt_extended
+sqlalchemy-citext
