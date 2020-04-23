@@ -2,11 +2,7 @@ from blacklist import BLACKLIST
 from flask import Flask, jsonify
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
-from db import db
 import os
-
-
-
 from resources.user import UserRegister, User, UserLogin, TokenRefresh, \
     GetUsers, UserLogout, RevokedTokenModel, MakeInActive, UpdateUser
 from resources.genre import Genre, UpdateGenre, NewGenre, GetAllGenres
@@ -33,12 +29,6 @@ def create_tables():
 
 
 jwt = JWTManager(app)
-
-"""
-`claims` are data we choose to attach to each jwt payload
-and for each jwt protected endpoint, we can retrieve these claims via `get_jwt_claims()`
-one possible use case for claims are access level control, which is shown below.
-"""
 
 
 @jwt.user_claims_loader
@@ -129,5 +119,6 @@ api.add_resource(GetAllTracks, '/all_tracks')
 api.add_resource(UpdateTrack, '/update_track/<int:track_id>')
 
 if __name__ == '__main__':
+    from db import db
     db.init_app(app)
     app.run(port=5000, debug=True)
