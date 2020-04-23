@@ -15,7 +15,6 @@ parser.add_argument('artist_id',
                     type=int,
                     help='This Field Cannot be blank',
                     required='True')
-_created_at = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
 
 class NewAlbum(Resource):
@@ -31,6 +30,7 @@ class NewAlbum(Resource):
             return {'message': 'No Such Artist Exists'}, 404
         if not data['title'] or data['title'].isspace():
             return {'message': 'Please Enter Album Name'}, 400
+        _created_at = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
         new_album = AlbumModel(
             title=data['title'],
             artist_id=data['artist_id'],

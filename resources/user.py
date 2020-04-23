@@ -6,6 +6,7 @@ from models.user import UserModel, RevokedTokenModel
 import datetime
 from db import db
 from models.user_session import UserSessionModel
+from sqlalchemy.exc import DataError
 
 
 _user_parser = reqparse.RequestParser()
@@ -46,25 +47,28 @@ class UserRegister(Resource):
         if UserModel.is_email_valid(email_address) is False:
             return{'message': 'Please Enter Valid email Address'},400
         _created_at = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-        new_user = UserModel(
-            email=email_address,
-            password=UserModel.generate_hash(password),
-            first_name=user_first_name,
-            last_name=user_last_name,
-            is_active=True,
-            created_at=_created_at
-        )
-        new_user.save_to_db()
-        user_info = UserModel.find_by_email(email_address)
-        return {'message': 'User created successfully.',
-                'Data': {
-                    'user_id':user_info.id,
-                    'email_address': email_address,
-                    'first_name': user_first_name,
-                    'last_name': user_last_name,
-                    'is_active': user_info.is_active,
-                    'created_at': user_info.created_at.strftime('%Y-%m-%d %H:%M:%S')
-                }}, 201
+        try:
+            new_user = UserModel(
+                email=email_address,
+                password=UserModel.generate_hash(password),
+                first_name=user_first_name,
+                last_name=user_last_name,
+                is_active=True,
+                created_at=_created_at
+            )
+            new_user.save_to_db()
+            user_info = UserModel.find_by_email(email_address)
+            return {'message': 'User created successfully.',
+                    'Data': {
+                        'user_id':user_info.id,
+                        'email_address': email_address,
+                        'first_name': user_first_name,
+                        'last_name': user_last_name,
+                        'is_active': user_info.is_active,
+                        'created_at': user_info.created_at.strftime('%Y-%m-%d %H:%M:%S')
+                    }}, 201
+        except DataError as e:
+            return dict(message=e._message())
 
 
 class User(Resource):
@@ -91,7 +95,9 @@ class UserLogin(Resource):
         email_address = data['email']
         password = data['password']
         current_user = UserModel.find_by_email(email_address)
-        # user_full_name = current_user.first_name+" "+current_user.last_name
+        user_first_name = UserModel.find_by_email(email_address).first_name
+        user_last_name = UserModel.find_by_email(email_address).last_name
+        user_full_name = user_first_name+" "+user_last_name
         current_user_id = UserModel.find_by_email(email_address).id
         user_session_info = UserSessionModel.find_by_id_and_time_out(current_user_id)
         if user_session_info:
@@ -111,21 +117,23 @@ class UserLogin(Resource):
             access_token = create_access_token(identity=email_address, fresh=True)
             refresh_token = create_refresh_token(identity=email_address)
             user_id = UserModel.find_by_email(email_address).id
-            new_session = UserSessionModel(
-                user_id=user_id,
-                session_time_in=user_time_in,
-                session_time_out=None
-            )
+            try:
+                new_session = UserSessionModel(
+                    user_id=user_id,
+                    session_time_in=user_time_in,
+                    session_time_out=None
+                )
+            except DataError as e:
+                return dict(message=e._message())
             new_session.save_to_db()
             return {
-                       'message': 'User have logged in',
+                       'message': '{} have logged in'.format(user_full_name),
+                        'email': email_address,
                         'session_time_in': user_time_in,
                        'access_token': access_token,
                         'refresh_token': refresh_token
                    }, 200
-
         else:
-
             return {'message': 'Wrong credentials'}, 401
 
 

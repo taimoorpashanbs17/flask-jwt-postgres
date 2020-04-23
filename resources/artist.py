@@ -10,7 +10,7 @@ parser.add_argument('name',
                     type=str,
                     help='This field cannot be blank',
                     required=True)
-_created_at = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+
 
 
 class NewArtist(Resource):
@@ -19,6 +19,7 @@ class NewArtist(Resource):
         data = parser.parse_args()
         if ArtistModel.find_by_name(data['name']):
             return {'message': 'Artist with this Name Already Existed'}, 403
+        _created_at = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
         new_artist = ArtistModel(
             name=data['name'],
             created_at=_created_at
