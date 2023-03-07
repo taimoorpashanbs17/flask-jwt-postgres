@@ -1,0 +1,1011 @@
+{
+	"info": {
+		"_postman_id": "1b5e0c1b-5252-4560-9f09-855679cf421d",
+		"name": "FlaskDB",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8110415"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\" : \"test_user1@flask-restapi-postgres.com\",\n\t\"password\" : \"Test@12345\",\n\t\"first_name\" : \"Test\",\n\t\"last_name\": \"User 1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/register",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"register"
+							]
+						},
+						"description": "Register our user from payload below.\n\n**return:**\n\n1. success_message\n\n2. newly created user id\n\n3. email address\n\n4. first_name\n\n5. last_name\n\n6. is_active (***Which will always be True for newly created User***)\n\n7. created_at (Time on which user was created)\n\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"pm.collectionVariables.set(\"access_token\", jsonData.access_token);",
+									"pm.collectionVariables.set(\"refresh_token\", jsonData.refresh_token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\t\n\t\"email\" : \"test_user1@flask-restapi-postgres.com\",\n\t\"password\" : \"Test@12345\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/login",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"login"
+							]
+						},
+						"description": "Login user with email and password.\n\n**Return:**\n\n1. success_message\n2. Session_time_in\n3. Access_token\n4. Refresh_Token"
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setGlobalVariable(\"access_token\", jsonData.access_token);",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{refresh_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/refresh",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"refresh"
+							]
+						},
+						"description": "It will return us New 'Access_token' as previous will have been expired (passed his time)\n\n**return:**\n\nAccess_token"
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODc2NTQ0MTQsIm5iZiI6MTU4NzY1NDQxNCwianRpIjoiMTRmMGM2NjYtMzNkNS00MDExLWE1YmQtMDhlMDdhY2ZlMmE2IiwiZXhwIjoxNTg3NjU1MzE0LCJpZGVudGl0eSI6ImFkbWluQGZsYXNrLXJlc3RhcGktcG9zdGdyZXMuY29tIiwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6eyJpc19hZG1pbiI6dHJ1ZX19.CWqx92-zF6ZdFIynRRxxGDQbt4AbhRkq03MjUxOuU8Y",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/logout",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"logout"
+							]
+						},
+						"description": "User will be logged out. We have to provide '**Access Token** 'for this.\n\n**return:**\n\n1. success_message\n\n2. session_time_in\n\n3. session_time_out"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "**All User's handling will be done here like User login, registration, getting Access Token again and Log out.**\n"
+		},
+		{
+			"name": "Genre",
+			"item": [
+				{
+					"name": "New Genre",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Filmy\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/new_genre",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"new_genre"
+							]
+						},
+						"description": "We can create new Genre by using this endpoint, we need to provide Genre's name on payload.\n\n**return:**\n\n1. success_message\n\n2. new_created_id\n\n3. genre_name\n\n4. created_date\n\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Genre",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/genre/1",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"genre",
+								"1"
+							]
+						},
+						"description": "It will return the detail of any single genre which we have created on basis of id we provide, we don't need to provide Access_token.\n\n**return:**\n\ndata:\n\ngenre_id\n\ngenre_name\n\ncreated_date"
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Genres",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/all_genre",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"all_genre"
+							]
+						},
+						"description": "Works on jwt_optional, means will return 2 data if we don't provide 'Access_Token' and if we do , it will show us all records.\n\n**return:**\n\n**data:**\n\n1. genre_id\n\n2. genre_name\n\n3. created_date"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Genre",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\":\"90s Hip Hop\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/update_genre/4",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"update_genre",
+								"4"
+							]
+						},
+						"description": "Update any genre name by selecting genre on their id. Access Key needs to be provided.\n\n**return:**\n\nsuccess messsage\ndata:\n\ngenre_id\n\ngenre_name\n\ncreated_date"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a genre",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/genre/15",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"genre",
+								"15"
+							]
+						},
+						"description": "In order delete any genre, we have to provide genre id and 'Access Token' both.\n\n**return:**\n\nsuccess message "
+					},
+					"response": []
+				}
+			],
+			"description": "***Need to Genre of a music here.\nFor Creating Tracks, its an important aspect to add a Genre here.***\n"
+		},
+		{
+			"name": "Artist",
+			"item": [
+				{
+					"name": "Create an Artist",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\" : \"Kavita Krishnymurti\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/new_artist",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"new_artist"
+							]
+						},
+						"description": "Create an Artist by providing its name only. Access Token must be provided\n\n**return :**\n\nsuccess message\n\nnew created id\n\nname\n\ncreated_at "
+					},
+					"response": []
+				},
+				{
+					"name": "Get Artist Info",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/artist/3",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"artist",
+								"3"
+							]
+						},
+						"description": "Gets the info of an individual artist, of whom we provide id.\nNo Token Required\n\n**return**\n\ndata:\n\nartist_id\n\nartist_name\n\ncreated_date"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Artists",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/all_artist",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"all_artist"
+							]
+						},
+						"description": "Works on jwt_optional, means will return 2 data if we don't provide 'Access_Token' and if we do , it will show us all records.\n\n**return:**\n\n**data:**\n\n1. artist_id\n\n2. artist_name\n\n3. created_date"
+					},
+					"response": []
+				},
+				{
+					"name": "Update an Artist",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\":\"Haddaway\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/update_artist/1",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"update_artist",
+								"1"
+							]
+						},
+						"description": "Created Artist can be updated with his name by providing an id.\nAccess Token must be provided.\n\n**return:**\n\nsuccess message\nData:\n\nid\n\nname\n\ncreated_date\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete an Artist",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/artist/14",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"artist",
+								"14"
+							]
+						},
+						"description": "Delete an artist by using created artist id.\nAccess Token must be provided.\n\n**return:**\n\nsuccess message"
+					},
+					"response": []
+				}
+			],
+			"description": "Artists are those, who are singing their tracks.\n"
+		},
+		{
+			"name": "Media Type",
+			"item": [
+				{
+					"name": "Create a Media type",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\" : \"New Fromat of mP4 Media File\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/new_mediaplayer",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"new_mediaplayer"
+							]
+						},
+						"description": "Create a media type by providing name on payload.\nAccess Token must be provided.\n\n**return:**\n\nsuccess_message\n\nData:\n\nnew_id\n\nplaylist_name\n\ncreated_at\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Media Types",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/all_mediatypes",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"all_mediatypes"
+							]
+						},
+						"description": "Works on jwt_optional, means will return 2 data if we don't provide 'Access_Token' and if we do , it will show us all records.\n\n**return:**\n\nData:\n\nplaylist_id\n\nplaylist_name\n\ncreated_at"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Media Type Info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/mediatype/4",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"mediatype",
+								"4"
+							]
+						},
+						"description": "It return us the info of single media type which we have ask by providing media type id on end point link.\n\n**return:**\n\nData:\n\nplaylist_id\n\nplaylist_name\n\ncreated_at"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Media Type",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/mediatype/2",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"mediatype",
+								"2"
+							]
+						},
+						"description": "Delete a Media Type by providing Media Type id.\nAccess token Must be provided.\n\n**return:**\n\nsuccess_message"
+					},
+					"response": []
+				},
+				{
+					"name": "Update a Media Type",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\" : \"New Format of mP4 Media File\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/update_mediatype/3",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"update_mediatype",
+								"3"
+							]
+						},
+						"description": "Update media type by using media type id on link\nAccess Token must be provided.\n\n**return:**\n\nsuccess_message\n\nid\n\nmediaType_id\n\nmediaType_name\n\ncreated_at\n"
+					},
+					"response": []
+				}
+			],
+			"description": "**Media Types are types upon which albums are released back in 90's and in traditional days there wasn't just mp4, there were other types as well**"
+		},
+		{
+			"name": "Tracks",
+			"item": [
+				{
+					"name": "Add a New Track",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\" : \"Duniya Haseeno Ka Mela\",\n\t\"album_id\" :3,\n\t\"mediatype_id\" : 3,\n\t\"genre_id\" : 7,\n\t\"composer\" : \"Viju Shah\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/new_track",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"new_track"
+							]
+						},
+						"description": "Add new Track with multiple data entered in payload.\nAccess Token must be provided.\n\n**return:**\n  \nsuccess_message\n\nData: \n\ntrack_id\n\ntrack_name\n\ncomposer_name\n\ncreated_at\n\nTrack_info\n\n artist_name\n\n album_name\n\n  genre_name\n\n  mediatype_name\n                   \n"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Track Info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/track/6",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"track",
+								"6"
+							]
+						},
+						"description": "To get Info of any single Track info, we need to provide track id.\n\n**return:**\n\nData:\n\ntrack_id\n\ntrack_name\n\ncomposer_name\n\ncreated_at\n\nTrack_info\n\nartist_name\n\nalbum_name\n\ngenre_name\n\nmediatype_name"
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Tracks",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/all_tracks",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"all_tracks"
+							]
+						},
+						"description": "Return all tracks with all information which is needed.\n\n**return:**\n\nData:\n\ntrack_id\n\ntrack_name\n\ncomposer_name\n\ncreated_at\n\nTrack_info\n\nartist_name\n\nalbum_name\n\ngenre_name\n\nmediatype_name"
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Track",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\" : \"Silent Lover\",\n\t\"album_id\" :41,\n\t\"mediatype_id\" : 1,\n\t\"genre_id\" : 25,\n\t\"composer\" : \"Freddie McCure\",\n\t\"milliseconds\" : 86363435,\n\t\"bytes\" : 5323454,\n\t\"unit_price\":2.30\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/update_track/13",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"update_track",
+								"13"
+							]
+						},
+						"description": "Edit any information in track by changing Track name, album, genre, media type, composer by adding track id.\n\n**return:**\n\nsuccess_message\n\nData:\n\ntrack_id\n\ntrack_name\n\ncomposer_name\n\ncreated_at\n\nTrack_info\n\nartist_name\n\nalbum_name\n\ngenre_name\n\nmediatype_name"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Track",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/track/4",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"track",
+								"4"
+							]
+						},
+						"description": "Delete any track by mentioning Track id on endpoint.\n\n**return**\n\nsuccess_message"
+					},
+					"response": []
+				}
+			],
+			"description": "**Each Artist have sang a track which he has on his album, with different genre and with different media type. It will be handled here by adding composer name, which is not required.**"
+		},
+		{
+			"name": "Album",
+			"item": [
+				{
+					"name": "Create an Album",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\" : \"Gupt\",\n\t\"artist_id\" : 6\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/new_album",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"new_album"
+							]
+						},
+						"description": "Create an Album by giving Album name and assigning it with Artist id.\nAccess token should be given.\n\n**return:**\n\nsuccess_message\n\nnew created id\n\nAlbum Name\n\nArtist name\n\nCreated_at"
+					},
+					"response": []
+				},
+				{
+					"name": "Get an Album",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/album/3",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"album",
+								"3"
+							]
+						},
+						"description": "It will return information of an individual album on basis of album id we provide in link.\n\n**return**\n\nData:\n\nalbum_id\n\nalbum_name\n\nartist_name\n\ncreated_at"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Albums",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/all_albums",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"all_albums"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Works on jwt_optional, means will return 2 data if we don't provide 'Access_Token' and if we do , it will show us all records.\n\n**return:**\n\nData:\n\nalbum_id\n\nalbum_name\n\nartist_name\n\ncreated_at"
+					},
+					"response": []
+				},
+				{
+					"name": "Update an Album",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\" : \"Spice World\",\n\t\"artist_id\" : 2\n\t\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/update_album/35",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"update_album",
+								"35"
+							]
+						},
+						"description": "Update an album by providing album id. User can update artist, name or both.\nAccess Token must be provided.\n\n**return:**\n\nsuccess_message\n\nalbum_id\n\nalbum_name\n\nartist_name\n\ncreated_at"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete an Album",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/album/3",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"album",
+								"3"
+							]
+						},
+						"description": "Delete an album by providing album id at end point.\n\n**return:**\n\nsuccess_message\n"
+					},
+					"response": []
+				}
+			],
+			"description": "**Artists have multiple Albums, so we have to create albums by assigning them with their respective Artist.**\n"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "access_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "refresh_token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

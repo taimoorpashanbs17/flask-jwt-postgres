@@ -11,10 +11,19 @@ from resources.album import NewAlbum, EditAlbum, GetAllAlbums, Album
 from resources.playlist import GetAllPlaylists, NewPlaylist, UpdatePlaylist, Playlist
 from resources.media_types import GetAllMediaTypes, NewMediaType, UpdateMediaType, MediaType
 from resources.tracks import NewTrack, Tracks, GetAllTracks, UpdateTrack
+from read_config import ReadConfig
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+database_password = ReadConfig().get_password()
+database_host = ReadConfig().get_hostname()
+database_port = ReadConfig().get_port()
+database_name = ReadConfig().get_database()
+
+database_connection_string = "postgresql://postgres:" + database_password + "@" + database_host + \
+                             ":" + database_port + "/" + database_name
+
+app.config['SQLALCHEMY_DATABASE_URI'] = database_connection_string
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['PROPAGATE_EXCEPTIONS'] = True
 app.config['JWT_BLACKLIST_ENABLED'] = True
@@ -73,9 +82,9 @@ def revoked_token_callback():
 
 
 api.add_resource(UserRegister, '/register')
-# api.add_resource(User, '/user/<int:user_id>')
+api.add_resource(User, '/user/<int:user_id>')
 api.add_resource(UserLogin, '/login')
-# api.add_resource(GetUsers, '/all_users')
+api.add_resource(GetUsers, '/all_users')
 api.add_resource(UpdateUser, '/update_user/<int:user_id>')
 api.add_resource(TokenRefresh, '/refresh')
 api.add_resource(UserLogout, '/logout')
@@ -113,5 +122,6 @@ api.add_resource(UpdateTrack, '/update_track/<int:track_id>')
 
 if __name__ == '__main__':
     from db import db
+
     db.init_app(app)
     app.run(port=5000, debug=True)

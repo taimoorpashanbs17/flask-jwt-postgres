@@ -12,9 +12,9 @@ create table users
   first_name varchar(120)            not null,
   last_name  varchar(120)            not null,
   is_admin   boolean default false   not null,
-  created_at timestamp default not null
+  is_active boolean default true not null,
+  created_at timestamp default null
 );
 
 alter table users
   owner to postgres;
-

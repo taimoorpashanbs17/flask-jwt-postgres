@@ -110,6 +110,3 @@ class Playlist(Resource):
             return {
                        'message': 'Something went Wrong'
                    }, 500
-
-
-

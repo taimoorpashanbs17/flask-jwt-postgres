@@ -28,17 +28,17 @@ class NewGenre(Resource):
             new_genre.save_to_db()
             new_id = new_genre.id
             return {
-                       'message': 'New Genre Has been Added',
-                       'GenreDetails': {
-                           'id': new_id,
-                           'name': data['name'],
-                           'created_at': _created_at
-                       }
-                   }, 201
+                'message': 'New Genre Has been Added',
+                'GenreDetails': {
+                    'id': new_id,
+                    'name': data['name'],
+                    'created_at': _created_at
+                }
+            }, 201
         except:
             return {
-                       'message': 'Something Went Wrong'
-                   }, 500
+                'message': 'Something Went Wrong'
+            }, 500
 
 
 class GetAllGenres(Resource):
@@ -53,8 +53,8 @@ class GetAllGenres(Resource):
             return GenreModel.return_all()
         except:
             return {
-                       'message': 'Something Went Wrong'
-                   }, 500
+                'message': 'Something Went Wrong'
+            }, 500
 
 
 class Genre(Resource):
@@ -66,8 +66,8 @@ class Genre(Resource):
             return genre.json(), 200
         except:
             return {
-                   'message': 'Something Went Wrong'
-               }, 500
+                'message': 'Something Went Wrong'
+            }, 500
 
     @jwt_required
     def delete(self, genre_id: int):
@@ -81,8 +81,8 @@ class Genre(Resource):
             }
         except:
             return {
-                       'message': 'Something went Wrong'
-                   }, 500
+                'message': 'Something went Wrong'
+            }, 500
 
 
 class UpdateGenre(Resource):
@@ -105,13 +105,13 @@ class UpdateGenre(Resource):
             genre.name = data['name']
             updated_genre.commit_db()
             return {
-                       'message': 'Genre Has been Updated',
-                       'GenreDetails': {
-                           'id': genre_id,
-                           'name': data['name']
-                       }
-                   }, 200
+                'message': 'Genre Has been Updated',
+                'GenreDetails': {
+                    'id': genre_id,
+                    'name': data['name']
+                }
+            }, 200
         except:
             return {
-                       'message': 'Something Went Wrong'
-                   }, 500
+                'message': 'Something Went Wrong'
+            }, 500
