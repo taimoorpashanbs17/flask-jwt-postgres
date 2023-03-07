@@ -8,7 +8,6 @@ from db import db
 from models.user_session import UserSessionModel
 from sqlalchemy.exc import DataError
 
-
 _user_parser = reqparse.RequestParser()
 _user_parser.add_argument('email',
                           type=str
@@ -23,7 +22,7 @@ _user_parser.add_argument('last_name',
                           type=str
                           )
 _user_parser.add_argument('is_active',
-                          type= bool)
+                          type=bool)
 _created_at = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
 
@@ -37,15 +36,15 @@ class UserRegister(Resource):
         if UserModel.find_by_email(email_address):
             return {"message": "A user with that email already exists"}, 400
         if not email_address or email_address.isspace():
-            return{'message': 'Please Enter email address'}, 400
+            return {'message': 'Please Enter email address'}, 400
         if not password or password.isspace():
-            return{'message': 'Please Enter Password'}, 400
+            return {'message': 'Please Enter Password'}, 400
         if not user_first_name or user_first_name.isspace():
-            return{'message': 'Please Enter First Name'}, 400
+            return {'message': 'Please Enter First Name'}, 400
         if not user_last_name or user_last_name.isspace():
-            return{'message': 'Please Enter Last Name'}, 400
+            return {'message': 'Please Enter Last Name'}, 400
         if UserModel.is_email_valid(email_address) is False:
-            return{'message': 'Please Enter Valid email Address'},400
+            return {'message': 'Please Enter Valid email Address'}, 400
         _created_at = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
         try:
             new_user = UserModel(
@@ -60,7 +59,7 @@ class UserRegister(Resource):
             user_info = UserModel.find_by_email(email_address)
             return {'message': 'User created successfully.',
                     'Data': {
-                        'user_id':user_info.id,
+                        'user_id': user_info.id,
                         'email_address': email_address,
                         'first_name': user_first_name,
                         'last_name': user_last_name,
@@ -97,17 +96,17 @@ class UserLogin(Resource):
         current_user = UserModel.find_by_email(email_address)
         user_first_name = UserModel.find_by_email(email_address).first_name
         user_last_name = UserModel.find_by_email(email_address).last_name
-        user_full_name = user_first_name+" "+user_last_name
+        user_full_name = user_first_name + " " + user_last_name
         current_user_id = UserModel.find_by_email(email_address).id
         user_session_info = UserSessionModel.find_by_id_and_time_out(current_user_id)
         if user_session_info:
             return {'message': 'You are Already Login'}, 400
         if UserModel.is_email_valid(email_address) is False:
-            return{'message': 'Please Enter Valid email Address'},400
+            return {'message': 'Please Enter Valid email Address'}, 400
         if not email_address or email_address.isspace():
-            return{'message': 'Please Enter email address'}, 400
+            return {'message': 'Please Enter email address'}, 400
         if not password or password.isspace():
-            return{'message': 'Please Enter Password'}, 400
+            return {'message': 'Please Enter Password'}, 400
         if user_session_info:
             return {'message': 'You are Already Login'}, 400
         user_time_in = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
@@ -127,12 +126,12 @@ class UserLogin(Resource):
                 return dict(message=e._message())
             new_session.save_to_db()
             return {
-                       'message': '{} have logged in'.format(user_full_name),
-                        'email': email_address,
-                        'session_time_in': user_time_in,
-                       'access_token': access_token,
-                        'refresh_token': refresh_token
-                   }, 200
+                'message': '{} have logged in'.format(user_full_name),
+                'email': email_address,
+                'session_time_in': user_time_in,
+                'access_token': access_token,
+                'refresh_token': refresh_token
+            }, 200
         else:
             return {'message': 'Wrong credentials'}, 401
 
@@ -196,10 +195,10 @@ class MakeInActive(Resource):
         db.session.commit()
         if user_info.is_active is False:
             return {
-                'message': user_full_name+' is now not an Active'
+                'message': user_full_name + ' is now not an Active'
             }
         return {
-            'message': user_full_name+' is now Active'
+            'message': user_full_name + ' is now Active'
         }, 200
 
 
@@ -209,8 +208,8 @@ class UpdateUser(Resource):
         claims = get_jwt_claims()
         if not claims['is_admin']:
             return {
-                       'message': 'Admin Previligies required'
-                   }, 401
+                'message': 'Admin Previligies required'
+            }, 401
         user_info = UserModel.find_by_id(user_id)
         if not user_info:
             return {'message': 'User Does not exists'}, 400
@@ -218,15 +217,15 @@ class UpdateUser(Resource):
         user_first_name = data['first_name']
         user_last_name = data['last_name']
         if not user_first_name or user_first_name.isspace():
-            return{'message': 'Please Enter First Name'}, 400
+            return {'message': 'Please Enter First Name'}, 400
         if not user_last_name or user_last_name.isspace():
-            return{'message': 'Please Enter Last Name'}, 400
+            return {'message': 'Please Enter Last Name'}, 400
         user_info.first_name = user_first_name
         user_info.last_name = user_last_name
         db.session.commit()
         return {
             'message': 'User Info has been Updated',
-            'Data':{
+            'Data': {
                 'user_id': user_info.id,
                 'email_address': user_info.email,
                 'first_name': user_info.first_name,

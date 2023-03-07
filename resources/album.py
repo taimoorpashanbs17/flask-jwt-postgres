@@ -46,12 +46,12 @@ class NewAlbum(Resource):
                     'title': data['title'],
                     'created_at': _created_at,
                     'artist_name': artist.name
-                 }
+                }
             }, 201
         except:
             return {
                 'message': 'Something Went Wrong'
-                   }, 500
+            }, 500
 
 
 class EditAlbum(Resource):
@@ -77,14 +77,14 @@ class EditAlbum(Resource):
         artist = ArtistModel.find_by_id(data['artist_id'])
         db.session.commit()
         return {
-                   'message': 'Genre Has been Updated',
-                   'GenreDetails': {
-                       'id': album_id,
-                       'title': data['title'],
-                       'created_at': album.created_at.strftime("%Y-%m-%d %H:%M:%S"),
-                       'artist_name': artist.name
-                   }
-               }, 200
+            'message': 'Genre Has been Updated',
+            'GenreDetails': {
+                'id': album_id,
+                'title': data['title'],
+                'created_at': album.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+                'artist_name': artist.name
+            }
+        }, 200
 
 
 class GetAllAlbums(Resource):
@@ -110,8 +110,8 @@ class Album(Resource):
             return _album_id.json(album_id)
         except:
             return {
-                       'message': 'Something went Wrong'
-                   }, 500
+                'message': 'Something went Wrong'
+            }, 500
 
     @jwt_required
     def delete(self, album_id: int):
