@@ -93,5 +93,7 @@ python3 app.py
 
 Learn to use these end points, with [following article](https://medium.com/@taimoorpasha2009/restful-apis-testing-project-using-access-tokens-along-with-database-verification-891f87224f6f) 
 
+Also Postman collection is available within repo with ```FlaskDB.postman_collection.json``` name.
+
 ## 🔗 Get In Touch with me
 [![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/taimoor-pasha-a2294878/)
